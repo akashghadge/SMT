@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sanjivan Medico Traders - Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styes.css" />
+</head>
+
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <div class="logo-section">
+        <h1>Sanjivan Medico Traders</h1>
+        <p class="tagline">Effortless Medicine Management</p>
+      </div>
+      <form class="login-form" id="loginForm">
+        <div class="input-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" placeholder="Enter your username" required />
+        </div>
+        <div class="input-group">
+          <label for="password">Password</label>
+          <div class="password-wrapper">
+            <input type="password" id="password" name="password" placeholder="Enter your password" required />
+            <button type="button" id="togglePassword" aria-label="Show Password">
+              <img src="/media_files/view.png" alt="Show Password" id="eyeIcon" />
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="login-button">Login</button>
+        <p class="forgot-password">
+          <a href="#">Forgot your password?</a>
+        </p>
+        <div id="error-message" class="error-message"></div>
+      </form>
+      <div class="register-section">
+        <button class="register-button" onclick="window.location.href='/create'">
+          Create Account
+        </button>
+      </div>
+      <div class="footer">
+        <p>&copy; 2024 Sanjivan Medico Traders. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Password visibility toggle
+    document
+      .getElementById("togglePassword")
+      .addEventListener("click", function () {
+        const passwordInput = document.getElementById("password");
+        const eyeIcon = document.getElementById("eyeIcon");
+
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+          eyeIcon.src = "/media_files/hidden.png"; // Path to the "Hide Password" logo
+          eyeIcon.alt = "Hide Password";
+        } else {
+          passwordInput.type = "password";
+          eyeIcon.src = "/media_files/view.png"; // Path to the "Show Password" logo
+          eyeIcon.alt = "Show Password";
+        }
+      });
+
+    // Handle form submission
+    document
+      .getElementById("loginForm")
+      .addEventListener("submit", async function (event) {
+        event.preventDefault();
+        try {
+          const username = document.getElementById('username').value;
+          const password = document.getElementById('password').value;
+          const response = await fetch('/api/user/in', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username: username, password: password }),
+          });
+
+          let data = await response.json();
+          // data = JSON.parse(data);
+          if (data.jwt) {
+            localStorage.setItem('jwt', data.jwt);
+            localStorage.setItem('isAdmin', data.isAdmin);
+            if (data.isAdmin) {
+              window.location.href = '/admin_dashboard.html';
+            } else {
+              window.location.href = '/pages/employee_dashboard.html';
+            }
+          } else {
+            const errorMessage = document.getElementById('error-message');
+            errorMessage.textContent = data.error || 'Login failed. Please try again.';
+            errorMessage.style.display = 'block';
+            setTimeout(() => {
+              errorMessage.style.display = 'none';
+            }, 5000);
+          }
+        } catch (error) {
+          const errorMessage = document.getElementById('error-message');
+          errorMessage.textContent = 'Login failed. Please try again.';
+          errorMessage.style.display = 'block';
+          setTimeout(() => {
+            errorMessage.style.display = 'none';
+          }, 5000);
+        }
+      });
+  </script>
+</body>
+
+</html>

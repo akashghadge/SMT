@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Main - Sanjivan Medico Traders</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Basic styles for header */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    header {
+      background-color: #333;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    #logout-btn {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    #logout-btn:hover {
+      background-color: #d32f2f;
+    }
+
+    /* Styling for the main container */
+    .container {
+      padding: 20px;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    /* Table styling */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th,
+    td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f4f4f4;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    input:focus {
+      border-color: #4caf50;
+    }
+
+    #add-button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    #add-button:hover {
+      background-color: #45a049;
+    }
+
+    /* Fixing the width of the columns */
+    td,
+    th {
+      width: 10%;
+    }
+
+    /* Ensuring the fields don't overflow */
+    input[type="text"],
+    input[type="number"],
+    input[type="date"] {
+      width: calc(100% - 20px);
+    }
+
+    /* Styling for error */
+    input.error {
+      border: 2px solid red;
+    }
+
+    /* Adding responsiveness */
+    @media (max-width: 768px) {
+
+      table,
+      th,
+      td {
+        font-size: 12px;
+      }
+
+      input {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header style="color: #45a049">
+    <h1>Sanjivan Medico Traders</h1>
+    <button id="logout-btn">Logout</button>
+  </header>
+  <div class="container">
+    <h2>Add Record</h2>
+    <table id="add-table">
+      <thead>
+        <tr>
+          <th>Sr. No.</th>
+          <th>Date</th>
+          <th>Party Code</th>
+          <th>Medical Name</th>
+          <th>City</th>
+          <th>Receipt No.</th>
+          <th>Amount</th>
+          <th>Track</th>
+          <th>Driver</th>
+          <th>Remarks</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="add-row">
+        <tr>
+          <td>1</td>
+          <td><input type="date" id="date" required /></td>
+          <td>
+            <input type="text" id="party-code" placeholder="Party Code" oninput="filterDropDown()" required />
+            <select id="dropdownSelect">
+            </select>
+          </td>
+          <td>
+            <input type="text" id="medical-name" placeholder="Medical Name" required />
+          </td>
+          <td><input type="text" id="city" placeholder="City" required /></td>
+          <td>
+            <input type="text" id="receipt-no" placeholder="Receipt No." required />
+          </td>
+          <td>
+            <input type="number" id="amount" placeholder="Amount" required />
+          </td>
+          <td>
+            <input type="text" id="track" placeholder="Track" required />
+          </td>
+          <td>
+            <input type="text" id="driver" placeholder="Driver" required />
+          </td>
+          <td><input type="text" id="remarks" placeholder="Remarks" /></td>
+          <td><button id="add-button">Add</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Record History</h2>
+    <table id="history-table">
+      <thead>
+        <tr>
+          <th>Sr. No.</th>
+          <th>Date</th>
+          <th>Party Code</th>
+          <th>Medical Name</th>
+          <th>City</th>
+          <th>Receipt No.</th>
+          <th>Amount</th>
+          <th>Salesman/Collector</th>
+          <th>Driver</th>
+          <th>Remarks</th>
+        </tr>
+      </thead>
+      <tbody id="history-body">
+        <!-- Records will appear here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    let recordCount = 1;
+    var allOptions = [];
+    async function filterDropDown() {
+      const searchText = document.getElementById("party-code").value;
+      let options = [];
+      for (let i = 0; i < allOptions.length; i++) {
+        const optionText = allOptions[i].CODE.toLowerCase();
+        if (optionText.indexOf(searchText) > -1) {
+          options.push(allOptions[i]);
+        }
+      }
+      updateOption(options);
+    }
+    function updateOption(options) {
+      let dropDown = document.getElementById('dropdownSelect');
+      let currOptions = ``;
+      options.forEach((val, i) => {
+        currOptions +=
+          `
+            <option value="${i}">${val.CODE}</option>
+          `
+      })
+      dropDown.innerHTML = currOptions;
+    }
+    async function loadPartyCodes() {
+      try {
+        const response = await fetch('./partycode.json'); // Fetch the JSON file
+        const data = await response.json(); // Parse JSON content
+        allOptions = data;
+        updateOption(allOptions);
+      } catch (error) {
+        alert(error);
+      }
+    }
+    loadPartyCodes();
+    document
+      .getElementById("add-button")
+      .addEventListener("click", async function () {
+        const date = document.getElementById("date").value;
+        const partyCode = document.getElementById("party-code").value;
+        const medicalName = document.getElementById("medical-name").value;
+        const city = document.getElementById("city").value;
+        const receiptNo = document.getElementById("receipt-no").value;
+        const amount = document.getElementById("amount").value;
+        const salesman = document.getElementById("track").value;
+        const drivername = document.getElementById("driver").value;
+        const remarks = document.getElementById("remarks").value;
+
+        const fields = [
+          date,
+          partyCode,
+          medicalName,
+          city,
+          receiptNo,
+          amount,
+          salesman,
+          drivername,
+        ];
+        let isValid = true;
+
+        // Validation
+        fields.forEach((field) => {
+          if (!field.value.trim()) {
+            field.classList.add("error");
+            isValid = false;
+          } else {
+            field.classList.remove("error");
+          }
+        });
+
+        if (!isValid) {
+          alert("Please fill out all required fields.");
+          return;
+        }
+
+        // Fetch request for user login
+        try {
+          const response = await fetch('/api/code/save-record', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              date,
+              partyCode,
+              medicalName,
+              city,
+              receiptNo,
+              amount,
+              salesman,
+              drivername,
+            }),
+          });
+          const data = await response.json();
+
+        } catch (error) {
+          console.error('Error during login:', error);
+        }
+
+
+        // Add Row to History Table
+        const tableBody = document.getElementById("history-body");
+        const row = `
+          <tr>
+            <td>${recordCount++}</td>
+            <td>${date.value}</td>
+            <td>${partyCode.value}</td>
+            <td>${medicalName.value}</td>
+            <td>${city.value}</td>
+            <td>${receiptNo.value}</td>
+            <td>${amount.value}</td>
+            <td>${salesman.value}</td>
+            <td>${driver.value}</td>
+            <td>${remarks.value}</td>
+          </tr>
+        `;
+        tableBody.insertAdjacentHTML("beforeend", row);
+
+        // Clear Input Fields
+        document.querySelectorAll("#add-row input").forEach((input) => {
+          input.value = "";
+          input.classList.remove("error"); // Remove error class after clearing
+        });
+      });
+
+    document
+      .getElementById("logout-btn")
+      .addEventListener("click", function () {
+        window.location.href = "index.html"; // Redirect to the login page
+      });
+  </script>
+</body>
+
+</html>
