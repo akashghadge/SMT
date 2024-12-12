@@ -22,7 +22,7 @@ const verify = require("./verify");
 const User = require("./routes/User.route");
 const Code = require("./routes/Code.route");
 
-// routes setting
+// routes setting 
 app.use('/api/user', User)
 app.use('/api/code', verify, Code);
 
