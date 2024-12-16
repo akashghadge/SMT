@@ -37,7 +37,7 @@
         <div id="error-message" class="error-message"></div>
       </form>
       <div class="register-section">
-        <button class="register-button" onclick="window.location.href='/create'">
+        <button class="register-button" onclick="window.location.href='/pages/register_employee.html'">
           Create Account
         </button>
       </div>
@@ -86,8 +86,9 @@
           if (data.jwt) {
             localStorage.setItem('jwt', data.jwt);
             localStorage.setItem('isAdmin', data.isAdmin);
+            localStorage.setItem('user', JSON.stringify(data.user));
             if (data.isAdmin) {
-              window.location.href = '/admin_dashboard.html';
+              window.location.href = '/pages/admin_dashboard.html';
             } else {
               window.location.href = '/pages/employee_dashboard.html';
             }

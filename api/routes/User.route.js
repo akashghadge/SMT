@@ -10,14 +10,14 @@ router.post("/in", async (req, res) => {
     }
     let accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 });
     if (username == 'admin' && password == 'password') {
-        res.status(200).json({ "jwt": accessToken, isAdmin: true })
+        res.status(200).json({ "jwt": accessToken, isAdmin: true, user: payload })
     }
     else {
         const user = await User.findOne({ username: username, password: password });
         if (!user) {
             return res.status(400).json({ error: "User not found.", "jwt": null });
         }
-        res.status(200).json({ "jwt": accessToken, isAdmin: false });
+        res.status(200).json({ "jwt": accessToken, isAdmin: false, user: user });
     }
 })
 

@@ -50,7 +50,12 @@ router.post('/filter-records', async (req, res) => {
     const filters = req.body;
     try {
         // Find records matching the filter criteria
-        const records = await Record.find(filters);
+        let filterLocal = {
+            salesman: filters.salesman,
+            date: { $gte: req.body.start, $lte: req.body.end }
+        }
+        console.log(filterLocal);
+        const records = await Record.find(filterLocal);
 
         // Respond with the matching records
         res.status(200).json(records);
@@ -59,5 +64,16 @@ router.post('/filter-records', async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 });
+
+router.post('/delete-records', async (req, res) => {
+    try {
+        const result = await Record.deleteMany(req.body); // Delete records based on filters
+        res.status(200).json({ deletedCount: result.deletedCount });
+        console.log("hello");
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+})
 
 module.exports = router;
