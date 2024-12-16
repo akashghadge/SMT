@@ -1,0 +1,207 @@
+[
+  {
+    "CODE": "A001",
+    "CUSTOMER NAME": "AMRUT MEDICAL STORE",
+    "City": "BHADRAWATI"
+  },
+  {
+    "CODE": "A003",
+    "CUSTOMER NAME": "AMBE MEDICAL & GEN.STORE",
+    "City": "GADCHIROLI (9423422117)"
+  },
+  {
+    "CODE": "A005",
+    "CUSTOMER NAME": "ALI MEDICAL STORE-RETAIL",
+    "City": "JIWATI"
+  },
+  {
+    "CODE": "A010",
+    "CUSTOMER NAME": "ANAND MEDICOS",
+    "City": "CHANDRAPUR(BABUPETH)"
+  },
+  {
+    "CODE": "A011",
+    "CUSTOMER NAME": "BHAGYASHRI MEDICAL & GENRAL",
+    "City": "BHEGAON"
+  },
+  {
+    "CODE": "A012",
+    "CUSTOMER NAME": "AMBIKA MEDICAL & GEN.STORE",
+    "City": "ALLAPALLI"
+  },
+  {
+    "CODE": "A014",
+    "CUSTOMER NAME": "ASHA MEDICAL & GEN.STORE",
+    "City": "VISAPUR"
+  },
+  {
+    "CODE": "A015",
+    "CUSTOMER NAME": "DR.MRS.AGRAWAL",
+    "City": "CHANDRAPUR"
+  },
+  {
+    "CODE": "A016",
+    "CUSTOMER NAME": "ARUN MEDICAL & GENERAL STORE",
+    "City": "ANKISA"
+  },
+  {
+    "CODE": "A020",
+    "CUSTOMER NAME": "SUMIT MEDICAL STORES",
+    "City": "CHANDRAPUR"
+  },
+  {
+    "CODE": "A021",
+    "CUSTOMER NAME": "MAHAKALI MEDICAL STORES",
+    "City": "CHANDRAPUR"
+  },
+  {
+    "CODE": "A024",
+    "CUSTOMER NAME": "PRATIMA MEDICAL & GEN.STORE",
+    "City": "SUNDARNAGAR"
+  },
+  {
+    "CODE": "A033",
+    "CUSTOMER NAME": "GURUDEO MEDICAL & GEN.STO",
+    "City": "PATHARI"
+  },
+  {
+    "CODE": "A035",
+    "CUSTOMER NAME": "ARYAVARTA MEDICAL & GEN.STORE",
+    "City": "CHANDRAPUR"
+  },
+  {
+    "CODE": "A038",
+    "CUSTOMER NAME": "JATIN MEDICAL & GEN.STORES",
+    "City": "TADOBA ROAD TUKUM,CHANDRAPUR"
+  },
+  {
+    "CODE": "A040",
+    "CUSTOMER NAME": "ASHIRWAD MEDICAL AGENCIES",
+    "City": "CHANDRAPUR"
+  },
+  {
+    "CODE": "A045",
+    "CUSTOMER NAME": "ANUSHRI MEDICAL & GEN. STORES",
+    "City": "SUMTHANA"
+  },
+  {
+    "CODE": "A049",
+    "CUSTOMER NAME": "AMTE MEDICAL & GEN STORE",
+    "City": "BALLARPUR"
+  },
+  {
+    "CODE": "A052",
+    "CUSTOMER NAME": "SHRI SHYAM MEDICAL & GEN.STORE",
+    "City": "TALODHI"
+  },
+  {
+    "CODE": "A057",
+    "CUSTOMER NAME": "ASMA MEDICAL & GEN.STORE",
+    "City": "LONDHOLI.TAL.SAOLI"
+  },
+  {
+    "CODE": "A058",
+    "CUSTOMER NAME": "ANAND MEDICAL & GEN.STORE",
+    "City": "KHADSANGI"
+  },
+  {
+    "CODE": "A059",
+    "CUSTOMER NAME": "AMAR MEDICAL & GEN.STORES",
+    "City": "ASHTI"
+  },
+  {
+    "CODE": "A060",
+    "CUSTOMER NAME": "DESHMUKH MEDICAL & GEN.STORE",
+    "City": "JIWATI [PH.9423620012]"
+  },
+  {
+    "CODE": "A061",
+    "CUSTOMER NAME": "PRINCE MEDICAL & GEN.STORE",
+    "City": "SHANKARPUR9604222699 (96042227"
+  },
+  {
+    "CODE": "A062",
+    "CUSTOMER NAME": "BAJAJ MEDICAL STORE",
+    "City": "SHANKARPUR (9765874764)"
+  },
+  {
+    "CODE": "A064",
+    "CUSTOMER NAME": "JAI BAJRANG MEDICAL & GEN.STOR",
+    "City": "SHANKARPUR"
+  },
+  {
+    "CODE": "A065",
+    "CUSTOMER NAME": "MANOHAR MEDICALS & GEN.STORE",
+    "City": "CHANDRAPUR"
+  },
+  {
+    "CODE": "A066",
+    "CUSTOMER NAME": "SHENDE MEDICAL & GEN.STORE",
+    "City": "SHANKARPUR 9420139407"
+  },
+  {
+    "CODE": "A068",
+    "CUSTOMER NAME": "SHRI GURUKRIPA MEDICAL & GEN.",
+    "City": "GHUGHUS"
+  },
+  {
+    "CODE": "A071",
+    "CUSTOMER NAME": "GAURATNA MEDICAL STORES",
+    "City": "WADSA"
+  },
+  {
+    "CODE": "A073",
+    "CUSTOMER NAME": "SHRI GURUKRUPA MEDICAL & GEN.S",
+    "City": "BHADRAWATI"
+  },
+  {
+    "CODE": "A074",
+    "CUSTOMER NAME": "ABHISHEK MEDICAL STORE",
+    "City": "CHANDRAPUR"
+  },
+  {
+    "CODE": "A075",
+    "CUSTOMER NAME": "AAIKRUPA MEDICAL & GEN.STORE",
+    "City": "CHANDRAPUR"
+  },
+  {
+    "CODE": "A080",
+    "CUSTOMER NAME": "ASTAVINAYAK MEDICAL & GEN.STOR",
+    "City": "MADHELI"
+  },
+  {
+    "CODE": "A086",
+    "CUSTOMER NAME": "ANANYA MEDICAL & GENRAL",
+    "City": "ANKISA"
+  },
+  {
+    "CODE": "A087",
+    "CUSTOMER NAME": "AMRITA MEDICAL & GEN STORES",
+    "City": "ADPALLI CAMP"
+  },
+  {
+    "CODE": "A088",
+    "CUSTOMER NAME": "ADITYA MEDICAL & GENERAL STORE",
+    "City": "CHANDRAPUR"
+  },
+  {
+    "CODE": "A091",
+    "CUSTOMER NAME": "ADITYA  MEDICAL &  GEN  STORES",
+    "City": "LALPETH  CHANDRAPUR"
+  },
+  {
+    "CODE": "A092",
+    "CUSTOMER NAME": "SHRI ASHOK MEDICAL & GEN.STORE",
+    "City": "PIPARI  ( DHONORA )"
+  },
+  {
+    "CODE": "A096",
+    "CUSTOMER NAME": "AMBIKA ICE CREAM",
+    "City": "S.T.WORKSHOP.TUKUM DURGAPUR"
+  },
+  {
+    "CODE": "A108",
+    "CUSTOMER NAME": "JAGRUTI KIRANA . STORES",
+    "City": "KRISHNA NAGAR MUL ROAD CHANDRA"
+  }
+]
