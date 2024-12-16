@@ -9,7 +9,7 @@
     <style>
       @font-face {
         font-family: "Yaro";
-        src: url("https://example.com/fonts/Yaro-Regular.ttf"); /* Replace with correct path if available */
+        src: url("https://example.com/fonts/Yaro-Regular.ttf");
       }
 
       body {
@@ -23,13 +23,12 @@
     <script>
       async function convertJsonToPdf() {
         try {
-          const response = await fetch("test.json"); // Fetch the JSON file
-          const jsonData = await response.json(); // Parse JSON data
+          const response = await fetch("test.json");
+          const jsonData = await response.json();
 
           const { jsPDF } = window.jspdf;
           const doc = new jsPDF();
 
-          // Get current date and day
           const date = new Date();
           const dateString = date.toLocaleDateString("en-US", {
             day: "2-digit",
@@ -37,74 +36,71 @@
             year: "numeric",
           });
           const dayString = date.toLocaleString("en-US", { weekday: "long" });
+          const recordDate = jsonData[0]?.["Record Date"] || "Not Available";
 
           // Function to render the header
           const renderHeader = (doc, pageNumber) => {
             const pageWidth = doc.internal.pageSize.width;
 
-            // Header background for the first page
             if (pageNumber === 1) {
-              doc.setFillColor("#2e7d32"); // Green background
-              doc.rect(0, 0, pageWidth, 30, "F"); // Full-width green header
+              doc.setFillColor("#2e7d32");
+              doc.rect(0, 0, pageWidth, 30, "F");
               doc.setFont("Yaro", "normal");
               doc.setFontSize(30);
-              doc.setTextColor("#ffffff"); // White text for first page
+              doc.setTextColor("#ffffff");
               doc.text("SANJIVAN MEDICO TRADERS", pageWidth / 2, 20, {
                 align: "center",
               });
 
-              doc.setFont("Helvetica", "bold"); // Set font to bold for the text
-              doc.setFontSize(10);
-              doc.setTextColor("#000000"); // Black text for employee and date
-              doc.text(`Employee Name: John Doe`, 15, 35);
-              doc.text(`Date: ${dateString} [${dayString}]`, 15, 45);
-
-              // Driver Name and Track Name
+              doc.setFont("Helvetica", "bold");
+              doc.setFontSize(12);
+              doc.setTextColor("#000000");
+              doc.text(`Employee Name: John Doe`, 15, 37);
               doc.text(
-                "Driver Name: ______________________",
+                `Driver Name : ______________________`,
                 pageWidth - 85,
-                35
+                37
               );
+              doc.text(`Record Date: ${recordDate}`, 15, 45);
               doc.text(
-                "Track Name: ______________________",
+                `Track Name : ______________________`,
                 pageWidth - 85,
                 45
               );
+              doc.text(`Print Date: ${dateString} [${dayString}]`, 15, 53);
+
+              return 60; // Return starting Y position for content
             } else {
-              // Header for pages after the first page
               doc.setFont("helvetica", "bold");
-              doc.setFontSize(16);
-              doc.setTextColor("#000000"); // Black text for other pages
-              doc.text("SANJIVAN MEDICO TRADERS", pageWidth / 2, 15, {
+              doc.setFontSize(12);
+              doc.setTextColor("#000000");
+
+              const lineY = 15;
+              const spaceBelowLine = 10;
+
+              doc.text("SANJIVAN MEDICO TRADERS", pageWidth / 2, lineY, {
                 align: "center",
               });
 
-              // Draw double line below "SANJIVAN MEDICO TRADERS" starting from page 2
-              const lineY = 18;
               doc.setLineWidth(0.5);
-              doc.setDrawColor(0, 0, 0); // Black color for line
-              doc.line(15, lineY, pageWidth - 15, lineY); // Draw the first line
-              doc.line(15, lineY + 1, pageWidth - 15, lineY + 1); // Draw the second line (slightly below the first one)
+              doc.setDrawColor(0, 0, 0);
+              doc.line(15, lineY + 3, pageWidth - 15, lineY + 3);
+              doc.line(15, lineY + 4, pageWidth - 15, lineY + 4);
 
-              // Leave significant space after the line
-              const spaceBelowLine = 10;
-
-              doc.setFontSize(10);
               doc.text(`Employee Name: John Doe`, 15, lineY + spaceBelowLine);
               doc.text(
-                `Date: ${dateString} [${dayString}]`,
-                15,
-                lineY + spaceBelowLine + 10
+                `Record Date : ${recordDate}`,
+                pageWidth - 85,
+                lineY + spaceBelowLine
               );
+
+              return lineY + spaceBelowLine + 10; // Return starting Y position for content
             }
           };
 
-          // Function to render the footer
           const renderFooter = (doc, pageNumber, totalPages) => {
             const pageWidth = doc.internal.pageSize.width;
             const pageHeight = doc.internal.pageSize.height;
-
-            // Page number
             doc.setFontSize(10);
             const pageText = `Page ${pageNumber} / ${totalPages}`;
             const textWidth = doc.getTextWidth(pageText);
@@ -126,69 +122,78 @@
             item["CODE"] || "",
             item["CUSTOMER NAME"] || "",
             item["City"] || "",
-            item["Receipt no."] || "N/A", // Add sample or dynamic Receipt no.
-            item["Amount"] || "N/A", // Add sample or dynamic Amount
+            item["Receipt no."] || "N/A",
+            item["Amount"] || "N/A",
           ]);
 
-          // Calculate Total Amount
           const totalAmount = rows.reduce((sum, row) => {
-            const amount = parseFloat(row[5].replace(/[^0-9.-]+/g, "")); // Remove non-numeric characters and parse
+            const amount = parseFloat(row[5].replace(/[^0-9.-]+/g, ""));
             return !isNaN(amount) ? sum + amount : sum;
           }, 0);
 
-          // Total Number of Entries
-          const totalEntries = rows.length;
-
-          // AutoTable plugin for the table
+          // Main table
           doc.autoTable({
             head: [columns],
             body: rows,
-            startY: 50, // Adjusted start position for all pages
+            startY: renderHeader(doc, 1),
             theme: "grid",
             headStyles: {
-              fillColor: [41, 128, 185], // Blue header
-              textColor: [255, 255, 255], // White text
+              fillColor: [41, 128, 185],
+              textColor: [255, 255, 255],
               fontSize: 12,
-              halign: "center", // Horizontal alignment for header
-              valign: "middle", // Vertical alignment for header
+              halign: "center",
+              valign: "middle",
             },
             bodyStyles: {
               fontSize: 10,
-              halign: "center", // Horizontal alignment for most columns
-              valign: "middle", // Vertical alignment for all rows
+              halign: "center",
+              valign: "middle",
             },
             columnStyles: {
-              2: { halign: "left" }, // CUSTOMER NAME column (index 2)
-              3: { halign: "left" }, // City column (index 3)
+              2: { halign: "left" },
+              3: { halign: "left" },
             },
             alternateRowStyles: {
-              fillColor: [240, 240, 240], // Light gray rows
+              fillColor: [240, 240, 240],
             },
-            margin: { top: 50 }, // Adjusted margin to align across pages
+            margin: { top: 30 },
             didDrawPage: (data) => {
               const currentPage = doc.internal.getCurrentPageInfo().pageNumber;
               renderHeader(doc, currentPage);
             },
           });
 
-          // Add Total Amount with Rupee symbol
-          doc.setFont("Helvetica", "normal"); // Using a font that supports the rupee symbol
-          doc.setFontSize(12); // Adjust font size for total amount
-          const totalAmountText = `Total Amount: RS ₹ ${totalAmount.toFixed(
-            2
-          )}`;
-          doc.text(totalAmountText, 15, doc.lastAutoTable.finalY + 10); // Adding the total amount text to PDF
+          // Add Total Amount
+          doc.setFont("Helvetica", "normal");
+          doc.setFontSize(12);
+          const totalAmountText = `Total Amount: Rs ${totalAmount.toFixed(2)}`;
+          const totalY = doc.lastAutoTable.finalY + 10;
 
-          // Add Currency Denomination Table
-          const denominationStartY = doc.lastAutoTable.finalY + 20;
+          // Check if we need a new page for denomination table
+          const remainingSpace = doc.internal.pageSize.height - totalY;
+          if (remainingSpace < 120) {
+            // If less than 120 units of space remaining
+            doc.addPage();
+            const newPageStartY = renderHeader(
+              doc,
+              doc.internal.getNumberOfPages()
+            );
+            doc.text(totalAmountText, 15, newPageStartY);
+            var denominationStartY = newPageStartY + 10;
+          } else {
+            doc.text(totalAmountText, 15, totalY);
+            var denominationStartY = totalY + 20;
+          }
+
+          // Denomination Table
           const denominationColumns = ["Denomination", "Units", "Total"];
           const denominationRows = [
-            ["₹ 10", "", ""],
-            ["₹ 20", "", ""],
-            ["₹ 50", "", ""],
-            ["₹ 100", "", ""],
-            ["₹ 200", "", ""],
-            ["₹ 500", "", ""],
+            ["Rs 10", "", ""],
+            ["Rs 20", "", ""],
+            ["Rs 50", "", ""],
+            ["Rs 100", "", ""],
+            ["Rs 200", "", ""],
+            ["Rs 500", "", ""],
             ["Total", "", ""],
           ];
 
@@ -197,8 +202,8 @@
             body: denominationRows,
             startY: denominationStartY,
             theme: "grid",
-            tableWidth: 80, // Adjusted table width
-            margin: { left: 15 }, // Aligned to the left
+            tableWidth: "auto",
+            margin: { left: 15 },
             headStyles: {
               fillColor: [41, 128, 185],
               textColor: [255, 255, 255],
@@ -209,21 +214,27 @@
               fontSize: 10,
               halign: "center",
             },
+            columnStyles: {
+              0: { cellWidth: 50 },
+              1: { cellWidth: 30 },
+              2: { cellWidth: 70 },
+            },
             alternateRowStyles: {
               fillColor: [240, 240, 240],
             },
+            didDrawPage: (data) => {
+              const currentPage = doc.internal.getCurrentPageInfo().pageNumber;
+              renderHeader(doc, currentPage);
+            },
           });
 
-          // Calculate total pages after table rendering
+          // Update footers
           const totalPages = doc.internal.getNumberOfPages();
-
-          // Update footers for all pages with the correct total page count
           for (let i = 1; i <= totalPages; i++) {
             doc.setPage(i);
             renderFooter(doc, i, totalPages);
           }
 
-          // Save the PDF
           doc.save("employee_name.pdf");
         } catch (error) {
           console.error("Error fetching JSON file:", error);
