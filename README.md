@@ -1,20 +1,18 @@
-# hastebin-clone-vue
+# Sanjivan Medico Traders
 
-I built the full stack clone of the hastebin web app which allows us to create and share the code snippets.
 I used following tech :-
-Front-End:- Vue, Vuex Store
+Front-End:- Htm, Css, Js
 Back-End:- Node, Express
 Database:- MongoDB
 
 Major Features:-
-1)Creation of Snippet
-2)Sharing it's URL
-3)Displaying Snippet
-3)Text Highlighting.
+1)Creation of employees account.
+2)Seperate dashboards for admin and employe
+3)Admin can sort data w.r.t. date and employee name. Admin can also select the date range to view or print data.
+4)Direct print action button for seamless data printing on paper, for records.
+5)Employee has text fields to insert data like, "Date, Party Code, Medical Name, City, Receipt No., Amount, Remarks"
 
-How Major Features Implemented:-
-1) Creation of snippet is done using textarea and Vue directive v-model and stored in Vuex store.
-2) Here we use MongoDB to store the data and after saving snippet we just return URL of snippet to display.
-3) Text highlighting is done using highligh.js library.
-Project URL :- https://hastebin-clone.herokuapp.com/
-Source Code :- https://github.com/akashghadge/hastebin-clone-vue
+Other small features
+1) Date is set to default to consume less time.
+2) Fields of Medical Name and City are auto populated when Party Code is selected. 
+3) Delete option for employee incase they make the wrong entry.
