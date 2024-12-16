@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel - Sanjivan Medico Traders</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: white;
+        color: #333;
+      }
+
+      header {
+        background-color: #2e7d32;
+        color: white;
+        padding: 20px;
+        text-align: center;
+        font-size: 3em;
+        font-weight: bold;
+      }
+
+      .greeting-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background-color: #777;
+        color: white;
+        font-size: 1.5em;
+      }
+
+      .greeting-container .logout {
+        background-color: #de2821;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 1em;
+      }
+
+      .filters-container {
+        display: flex;
+        justify-content: flex-start;
+        gap: 10px;
+        padding: 20px;
+      }
+
+      .filters-container select {
+        padding: 8px;
+        font-size: 1em;
+      }
+
+      .table-container {
+        padding: 20px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        font-size: 1em;
+      }
+
+      table,
+      th,
+      td {
+        border: 1px solid #333;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #2e7d32;
+        color: white;
+      }
+
+      td .action-btn {
+        background-color: #2e7d32;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+
+      .date-range-container {
+        display: none;
+        margin-top: 5px;
+      }
+
+      .date-range-container input {
+        padding: 5px;
+        font-size: 1em;
+        margin-right: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>Sanjivan Medico Traders</header>
+
+    <div class="greeting-container">
+      <div class="greeting" id="greeting"></div>
+      <button class="logout" onclick="location.href='index.html'">
+        Logout
+      </button>
+    </div>
+
+    <div class="filters-container">
+      <label for="date-filter">
+        Date Filter:
+        <select id="date-filter" onchange="applyFilters()">
+          <option value="today" selected>Today</option>
+          <option value="yesterday">Yesterday</option>
+          <option value="range">Select Date Range</option>
+        </select>
+      </label>
+
+      <div class="date-range-container" id="date-range-container">
+        <input type="date" id="start-date" />
+        <input type="date" id="end-date" />
+      </div>
+
+      <label for="employee-filter">
+        Employee Filter:
+        <select id="employee-filter" onchange="applyFilters()">
+          <option value="any" selected>ANY</option>
+          <option value="Employee 1">Employee 1</option>
+          <option value="Employee 2">Employee 2</option>
+          <option value="Employee 3">Employee 3</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="table-container">
+      <table id="data-table">
+        <thead>
+          <tr>
+            <th>S.No.</th>
+            <th>Date</th>
+            <th>Employee Name</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>2024-12-11</td>
+            <td>Employee 1</td>
+            <td>
+              <button class="action-btn" onclick="location.href='csvtest.html'">
+                View/Print
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>2024-12-10</td>
+            <td>Employee 2</td>
+            <td>
+              <button class="action-btn" onclick="location.href='csvtest.html'">
+                View/Print
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>2024-12-09</td>
+            <td>Employee 3</td>
+            <td>
+              <button class="action-btn" onclick="location.href='csvtest.html'">
+                View/Print
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      function updateGreeting() {
+        const now = new Date();
+        const hour = now.getHours();
+        const greetingEl = document.getElementById("greeting");
+
+        let greeting = "Good Evening, Admin";
+        if (hour < 12) {
+          greeting = "Good Morning, Admin";
+        } else if (hour < 18) {
+          greeting = "Good Afternoon, Admin";
+        }
+
+        greetingEl.textContent = greeting;
+      }
+
+      function handleDateFilterChange() {
+        const dateFilter = document.getElementById("date-filter");
+        const dateRangeContainer = document.getElementById(
+          "date-range-container"
+        );
+
+        if (dateFilter.value === "range") {
+          dateRangeContainer.style.display = "block";
+        } else {
+          dateRangeContainer.style.display = "none";
+        }
+      }
+
+      function updateSerialNumbers() {
+        const rows = document.querySelectorAll("#data-table tbody tr");
+        let count = 1;
+        rows.forEach((row) => {
+          if (row.style.display !== "none") {
+            row.cells[0].textContent = count;
+            count++;
+          }
+        });
+      }
+
+      function applyFilters() {
+        filterTableByDate();
+        filterTableByEmployee();
+        updateSerialNumbers();
+      }
+
+      function filterTableByDate() {
+        const dateFilter = document.getElementById("date-filter").value;
+        const startDateInput = document.getElementById("start-date");
+        const endDateInput = document.getElementById("end-date");
+        const rows = document.querySelectorAll("#data-table tbody tr");
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+
+        let startDate, endDate;
+
+        switch (dateFilter) {
+          case "today":
+            startDate = today;
+            endDate = new Date(today);
+            endDate.setHours(23, 59, 59, 999);
+            break;
+          case "yesterday":
+            startDate = yesterday;
+            endDate = new Date(yesterday);
+            endDate.setHours(23, 59, 59, 999);
+            break;
+          case "range":
+            if (startDateInput.value) {
+              startDate = new Date(startDateInput.value);
+              startDate.setHours(0, 0, 0, 0);
+            }
+            if (endDateInput.value) {
+              endDate = new Date(endDateInput.value);
+              endDate.setHours(23, 59, 59, 999);
+            }
+            break;
+        }
+
+        rows.forEach((row) => {
+          const rowDate = new Date(row.cells[1].textContent);
+          rowDate.setHours(0, 0, 0, 0);
+
+          let showRow = true;
+          if (startDate && rowDate < startDate) showRow = false;
+          if (endDate && rowDate > endDate) showRow = false;
+
+          row.style.display = showRow ? "" : "none";
+        });
+      }
+
+      function filterTableByEmployee() {
+        const employeeFilter = document.getElementById("employee-filter").value;
+        const rows = document.querySelectorAll("#data-table tbody tr");
+
+        rows.forEach((row) => {
+          if (row.style.display !== "none") {
+            // Only filter visible rows
+            const employeeName = row.cells[2].textContent;
+            if (employeeFilter !== "any" && employeeName !== employeeFilter) {
+              row.style.display = "none";
+            }
+          }
+        });
+      }
+
+      window.onload = () => {
+        updateGreeting();
+        handleDateFilterChange();
+        applyFilters(); // Apply initial filters
+      };
+
+      document
+        .getElementById("date-filter")
+        .addEventListener("change", handleDateFilterChange);
+    </script>
+  </body>
+</html>
