@@ -1,433 +1,404 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Main - Sanjivan Medico Traders</title>
+    <style>
+      /* Existing styles */
+      :root {
+        --primary-color: #4caf50;
+        --secondary-color: #4caf50;
+        --accent-color: #27ae60;
+        --background-color: #ecf0f1;
+        --text-color: #333;
+        --white: #ffffff;
+        --error-color: #e74c3c;
+      }
 
-<head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Main - Sanjivan Medico Traders</title>
-	<link rel="stylesheet" href="styles.css" />
-	<style>
-		/* Basic styles for header */
-		body {
-			font-family: Arial, sans-serif;
-			margin: 0;
-			padding: 0;
-			box-sizing: border-box;
-		}
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-		header {
-			background-color: #333;
-			color: white;
-			padding: 10px 20px;
-			text-align: center;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-		}
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        line-height: 1.6;
+      }
 
-		header h1 {
-			margin: 0;
-		}
+      /* Header Styling */
+      header {
+        background-color: var(--primary-color);
+        color: var(--white);
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0, 0, s, 0.1);
+      }
 
-		#logout-btn {
-			background-color: #f44336;
-			color: white;
-			border: none;
-			padding: 10px;
-			cursor: pointer;
-		}
+      header h1 {
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
 
-		#logout-btn:hover {
-			background-color: #d32f2f;
-		}
+      #logout-btn {
+        background-color: var(--error-color);
+        color: var(--white);
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
 
-		/* Styling for the main container */
-		.container {
-			padding: 20px;
-		}
+      #logout-btn:hover {
+        background-color: #c0392b;
+      }
 
-		h2 {
-			font-size: 24px;
-			margin-bottom: 20px;
-		}
+      /* Container Styling */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
 
-		/* Table styling */
-		table {
-			width: 100%;
-			border-collapse: collapse;
-			margin-bottom: 20px;
-		}
+      h2 {
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        border-bottom: 2px solid var(--accent-color);
+        padding-bottom: 10px;
+      }
 
-		th,
-		td {
-			padding: 10px;
-			border: 1px solid #ddd;
-			text-align: center;
-		}
+      /* Table Styling */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: var(--white);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
+      }
 
-		th {
-			background-color: #f4f4f4;
-		}
+      th,
+      td {
+        padding: 12px;
+        border: 1px solid #e0e0e0;
+        text-align: center;
+        vertical-align: middle;
+      }
 
-		input {
-			width: 100%;
-			padding: 8px;
-			margin: 5px 0;
-			box-sizing: border-box;
-			border: 1px solid #ccc;
-			border-radius: 4px;
-		}
+      th {
+        background-color: var(--secondary-color);
+        color: var(--white);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
 
-		input:focus {
-			border-color: #4caf50;
-		}
+      /* Input Styling */
+      input {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        border: 1px solid #d1d1d1;
+        border-radius: 4px;
+        transition: border-color 0.3s ease;
+      }
 
-		#add-button {
-			background-color: #4caf50;
-			color: white;
-			border: none;
-			padding: 10px;
-			cursor: pointer;
-		}
+      input:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 5px rgba(39, 174, 96, 0.3);
+      }
 
-		#add-button:hover {
-			background-color: #45a049;
-		}
+      input.error {
+        border: 2px solid var(--error-color);
+      }
 
-		/* Fixing the width of the columns */
-		td,
-		th {
-			width: 10%;
-		}
+      #dropdownSelect {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #d1d1d1;
+        border-radius: 4px;
+      }
 
-		/* Ensuring the fields don't overflow */
-		input[type="text"],
-		input[type="number"],
-		input[type="date"] {
-			width: calc(100% - 20px);
-		}
+      /* Buttons */
+      #add-button {
+        background-color: var(--accent-color);
+        color: var(--white);
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
 
-		/* Styling for error */
-		input.error {
-			border: 2px solid red;
-		}
+      #add-button:hover {
+        background-color: #2ecc71;
+      }
 
-		/* Adding responsiveness */
-		@media (max-width: 768px) {
+      .delete-btn {
+        background-color: var(--error-color);
+        color: var(--white);
+        border: none;
+        padding: 8px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
 
-			table,
-			th,
-			td {
-				font-size: 12px;
-			}
+      .delete-btn:hover {
+        background-color: #c0392b;
+      }
 
-			input {
-				width: 100%;
-			}
-		}
+      /* Responsive Design */
+      @media screen and (max-width: 1024px) {
+        .container {
+          padding: 15px;
+        }
 
-		.delete-btn {
-			background-color: #f44336;
-			color: white;
-			border: none;
-			padding: 5px 10px;
-			cursor: pointer;
-		}
+        table {
+          font-size: 14px;
+        }
 
-		.delete-btn:hover {
-			background-color: #d32f2f;
-		}
-	</style>
-</head>
+        th,
+        td {
+          padding: 10px;
+        }
+      }
 
-<body>
-	<header style="color: #45a049">
-		<h1>Sanjivan Medico Traders</h1>
-		<button id="logout-btn">Logout</button>
-	</header>
-	<div class="container">
-		<h2>Add Record</h2>
-		<table id="add-table">
-			<thead>
-				<tr>
-					<th>Sr. No.</th>
-					<th>Date</th>
-					<th>Party Code</th>
-					<th>Medical Name</th>
-					<th>City</th>
-					<th>Receipt No.</th>
-					<th>Amount</th>
-					<th>Remarks</th>
-					<th>Action</th>
-				</tr>
-			</thead>
-			<tbody id="add-row">
-				<tr>
-					<td>1</td>
-					<td><input type="date" id="date" required onchange="dateChange()" /></td>
-					<td>
-						<input type="text" id="party-code" placeholder="Party Code" oninput="filterDropDown()"
-							required />
-						<select id="dropdownSelect" oninput="selectPartyCode()">
-						</select>
-					</td>
-					<td>
-						<input type="text" id="medical-name" placeholder="Medical Name" required disabled />
-					</td>
-					<td><input type="text" id="city" placeholder="City" required disabled /></td>
-					<td>
-						<input type="text" id="receipt-no" placeholder="Receipt No." required />
-					</td>
-					<td>
-						<input type="number" id="amount" placeholder="Amount" required />
-					</td>
-					<td><input type="text" id="remarks" placeholder="Remarks" /></td>
-					<td><button id="add-button">Add</button></td>
-				</tr>
-			</tbody>
-		</table>
+      @media screen and (max-width: 768px) {
+        header {
+          flex-direction: column;
+          text-align: center;
+          gap: 10px;
+        }
 
-		<h2>Record History</h2>
-		<table id="history-table">
-			<thead>
-				<tr>
-					<th>Sr. No.</th>
-					<th>Date</th>
-					<th>Party Code</th>
-					<th>Medical Name</th>
-					<th>City</th>
-					<th>Receipt No.</th>
-					<th>Amount</th>
-					<th>Remarks</th>
-					<th>Action</th>
-				</tr>
-			</thead>
-			<tbody id="history-body">
-				<!-- Records will appear here -->
-			</tbody>
-		</table>
-	</div>
+        header h1 {
+          font-size: 1.2rem;
+        }
 
-	<script>
-		const today = new Date();
-		const formattedDate = today.toISOString().split('T')[0];
-		// Set the value of the input field
-		document.getElementById('date').value = formattedDate
+        #logout-btn {
+          width: 100%;
+          max-width: 200px;
+        }
 
-		let recordCount = 1;
+        table,
+        th,
+        td {
+          font-size: 12px;
+        }
 
-		// Selection box js
-		var allOptions = [];
-		async function filterDropDown() {
-			const searchText = document.getElementById("party-code").value.toLowerCase();
-			let options = [];
-			for (let i = 0; i < allOptions.length; i++) {
-				const optionText = allOptions[i].CODE.toLowerCase();
-				if (optionText.indexOf(searchText) > -1) {
-					options.push(allOptions[i]);
-				}
-			}
-			updateOption(options);
-		}
-		function updateOption(options) {
-			let dropDown = document.getElementById('dropdownSelect');
-			let currOptions = ``;
-			options.forEach((val, i) => {
-				currOptions +=
-					`
-            <option value="${val.CODE}">${val.CODE}</option>
-          `
-			})
-			dropDown.innerHTML = currOptions;
-			selectPartyCode();
-		}
-		async function loadPartyCodes() {
-			try {
-				const response = await fetch('./partycode.json'); // Fetch the JSON file
-				const data = await response.json(); // Parse JSON content
-				allOptions = data;
-				updateOption(allOptions);
-			} catch (error) {
-				alert(error);
-			}
-		}
-		loadPartyCodes();
-		function selectPartyCode() {
-			let currSelection = document.getElementById('dropdownSelect').value;
-			if (currSelection !== '') {
-				let optionArr = allOptions.filter((val) => {
-					return currSelection === val.CODE;
-				})
-				document.getElementById('medical-name').value = optionArr[0]['CUSTOMER NAME']
-				document.getElementById('city').value = optionArr[0]['City']
-			}
-		}
+        input,
+        #dropdownSelect {
+          font-size: 12px;
+          padding: 8px;
+        }
+      }
 
+      @media screen and (max-width: 480px) {
+        .container {
+          padding: 10px;
+        }
 
-		document
-			.getElementById("add-button")
-			.addEventListener("click", async function () {
-				const date = document.getElementById("date");
-				const partyCode = document.getElementById("dropdownSelect");
-				const medicalName = document.getElementById("medical-name");
-				const city = document.getElementById("city");
-				const receiptNo = document.getElementById("receipt-no");
-				const amount = document.getElementById("amount");
-				const remarks = document.getElementById("remarks");
+        table {
+          display: block;
+          overflow-x: auto;
+        }
 
-				const fields = [
-					date,
-					partyCode,
-					medicalName,
-					city,
-					receiptNo,
-					amount,
-				];
-				let isValid = true;
+        th,
+        td {
+          min-width: 100px;
+        }
+      }
+    </style>
+  </head>
 
-				// Validation
-				fields.forEach((field) => {
-					if (!field.value.trim()) {
-						field.classList.add("error");
-						isValid = false;
-					} else {
-						field.classList.remove("error");
-					}
-				});
+  <body>
+    <header>
+      <h1>Sanjivan Medico Traders</h1>
+      <button id="logout-btn">Logout</button>
+    </header>
+    <div class="container">
+      <h2>Add Record</h2>
+      <table id="add-table">
+        <thead>
+          <tr>
+            <th>Sr. No.</th>
+            <th>Date</th>
+            <th>Party Code</th>
+            <th>Medical Name</th>
+            <th>City</th>
+            <th>Receipt No.</th>
+            <th>Amount</th>
+            <th>Remarks</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="add-row">
+          <tr>
+            <td></td>
+            <td>
+              <input type="date" id="date" required onchange="dateChange()" />
+            </td>
+            <td>
+              <input
+                type="text"
+                id="party-code"
+                placeholder="Party Code"
+                oninput="filterDropDown()"
+              />
+              <select id="dropdownSelect" oninput="selectPartyCode()"></select>
+            </td>
+            <td>
+              <input
+                type="text"
+                id="medical-name"
+                placeholder="Medical Name"
+                required
+              />
+            </td>
+            <td>
+              <input type="text" id="city" placeholder="City" required />
+            </td>
+            <td>
+              <input
+                type="text"
+                id="receipt-no"
+                placeholder="Receipt No."
+                required
+              />
+            </td>
+            <td>
+              <input type="number" id="amount" placeholder="Amount" required />
+            </td>
+            <td><input type="text" id="remarks" placeholder="Remarks" /></td>
+            <td><button id="add-button">Add</button></td>
+          </tr>
+        </tbody>
+      </table>
 
-				if (!isValid) {
-					alert("Please fill out all required fields.");
-					return;
-				}
-				try {
+      <h2>Record History</h2>
+      <table id="history-table">
+        <thead>
+          <tr>
+            <th>Sr. No.</th>
+            <th>Date</th>
+            <th>Party Code</th>
+            <th>Medical Name</th>
+            <th>City</th>
+            <th>Receipt No.</th>
+            <th>Amount</th>
+            <th>Remarks</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="history-body">
+          <!-- Records will appear here -->
+        </tbody>
+      </table>
+    </div>
 
-					let record = {
-						track: "",
-						drivername: "",
-						date: date.value,
-						salesman: JSON.parse(localStorage.getItem('user')).name,
-						receiptNumber: receiptNo.value,
-						amount: amount.value,
-						city: city.value,
-						remark: remarks.value,
-						name: medicalName.value,
-						partyCode: partyCode.value,
-						token: (localStorage.getItem('jwt'))
-					};
+    <script>
+      const today = new Date();
+      const formattedDate = today.toISOString().split("T")[0];
+      // Format the date as DD MMMM YYYY
+      function formatDate(date) {
+        const options = { day: "2-digit", month: "long", year: "numeric" };
+        return new Date(date).toLocaleDateString("en-GB", options);
+      }
 
+      document.getElementById("date").value = formattedDate;
 
-					const response = await fetch('/api/code/save-record', {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-						},
-						body: JSON.stringify(record),
-					});
+      // Clear all input fields when Add button is clicked
+      document.getElementById("add-button").addEventListener("click", function () {
+        document.getElementById("party-code").value = "";
+        document.getElementById("medical-name").value = "";
+        document.getElementById("city").value = "";
+        document.getElementById("receipt-no").value = "";
+        document.getElementById("amount").value = "";
+        document.getElementById("remarks").value = "";
+        document.getElementById("date").value = formattedDate;
+      });
 
-					let data = await response.json();
-					// Clear Input Fields
-					document.querySelectorAll("#add-row input").forEach((input) => {
-						if (input.id === 'receipt-no' || input.id === 'amount') {
-							input.value = "";
-						}
-						input.classList.remove("error"); // Remove error class after clearing
-					});
-					updateRecordList();
-				} catch (error) {
-					alert(error)
-				}
-			});
+      // Data Deletion with confirmation
+      function deleteRecord(row) {
+        if (confirm("Are you sure you want to delete this record?")) {
+          row.remove();
+        }
+      }
 
-		async function dateChange() {
-			updateRecordList();
-		}
-		async function updateRecordList() {
-			const tableBody = document.getElementById("history-body");
-			tableBody.innerHTML = '';
-			try {
-				let dateValue = document.getElementById('date').value;
-				const start = new Date(dateValue);
-				start.setUTCHours(0, 0, 0, 0); // Start of the day in UTC
-				const end = new Date(dateValue);
-				end.setUTCHours(23, 59, 59, 999); // End of the day in UTC
+      // Add Record to History
+      document.getElementById("add-button").onclick = function () {
+        const date = document.getElementById("date").value;
+        const partyCode = document.getElementById("party-code").value;
+        const medicalName = document.getElementById("medical-name").value;
+        const city = document.getElementById("city").value;
+        const receiptNo = document.getElementById("receipt-no").value;
+        const amount = document.getElementById("amount").value;
+        const remarks = document.getElementById("remarks").value;
 
-				let record = {
-					salesman: JSON.parse(localStorage.getItem('user')).name,
-					start, end,
-					token: (localStorage.getItem('jwt'))
-				};
+        if (
+          !partyCode ||
+          !medicalName ||
+          !city ||
+          !receiptNo ||
+          !amount
+        ) {
+          alert("Please fill in all required fields.");
+          return;
+        }
 
+        const row = document.createElement("tr");
 
-				const response = await fetch('/api/code/filter-records', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify(record),
-				});
+        const srNo = document.createElement("td");
+        srNo.textContent = document.querySelectorAll("#history-body tr").length + 1; // Increment Sr. No.
+        row.appendChild(srNo);
 
-				let allRecords = await response.json();
-				console.log(allRecords);
+        const dateTd = document.createElement("td");
+        dateTd.textContent = formatDate(date);
+        row.appendChild(dateTd);
 
-				allRecords.forEach((record, i) => {
-					const row = document.createElement("tr");
-					row.innerHTML = `
-					<td>${i + 1}</td>
-					<td>${record.date}</td>
-					<td>${record.partyCode}</td>
-					<td>${record.name}</td>
-					<td>${record.city}</td>
-					<td>${record.receiptNumber}</td>
-					<td>${record.amount}</td>
-					<td>${record.remark}</td>
-					<td><button class="delete-btn">Delete</button></td>
-					`;
+        const partyCodeTd = document.createElement("td");
+        partyCodeTd.textContent = partyCode;
+        row.appendChild(partyCodeTd);
 
-					tableBody.appendChild(row);
+        const medicalNameTd = document.createElement("td");
+        medicalNameTd.textContent = medicalName;
+        row.appendChild(medicalNameTd);
 
-					// Add delete functionality
-					row
-						.querySelector(".delete-btn")
-						.addEventListener("click", async function (event) {
-							if (
-								confirm(
-									"Are you sure you want to delete this record? This action is irreversible."
-								) &&
-								confirm("Please confirm again to delete.")
+        const cityTd = document.createElement("td");
+        cityTd.textContent = city;
+        row.appendChild(cityTd);
 
-							) {
-								try {
-									record.token = localStorage.getItem('jwt');
-									const response = await fetch('/api/code/delete-records', {
-										method: 'POST',
-										headers: {
-											'Content-Type': 'application/json',
-										},
-										body: JSON.stringify(record),
-									});
+        const receiptNoTd = document.createElement("td");
+        receiptNoTd.textContent = receiptNo;
+        row.appendChild(receiptNoTd);
 
-									await response.json();
-									updateRecordList();
-								} catch (error) {
-									console.log(error);
-									alert(error);
-								}
-							}
-						});
+        const amountTd = document.createElement("td");
+        amountTd.textContent = amount;
+        row.appendChild(amountTd);
 
-				})
+        const remarksTd = document.createElement("td");
+        remarksTd.textContent = remarks;
+        row.appendChild(remarksTd);
 
-			} catch (error) {
-				console.log(error);
-			}
-		}
-		updateRecordList();
-		document
-			.getElementById("logout-btn")
-			.addEventListener("click", function () {
-				window.location.href = "../index.html"; // Redirect to the login page
-			});
-	</script>
-</body>
+        const actionTd = document.createElement("td");
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.classList.add("delete-btn");
+        deleteBtn.onclick = function () {
+          deleteRecord(row);
+        };
+        actionTd.appendChild(deleteBtn);
+        row.appendChild(actionTd);
 
+        document.getElementById("history-body").appendChild(row);
+      };
+    </script>
+  </body>
 </html>
