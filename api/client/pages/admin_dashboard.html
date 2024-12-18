@@ -3,103 +3,218 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.19/jspdf.plugin.autotable.min.js"></script>
     <title>Admin Panel - Sanjivan Medico Traders</title>
     <style>
-      body {
-        font-family: Arial, sans-serif;
+      /* Reset and Base Styles */
+      * {
         margin: 0;
         padding: 0;
-        background-color: white;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        background-color: #f5f5f5;
         color: #333;
+        line-height: 1.6;
       }
 
+      /* Header Styles */
       header {
-        background-color: #2e7d32;
+        background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
         color: white;
-        padding: 20px;
+        padding: 1.5rem;
         text-align: center;
-        font-size: 3em;
+        font-size: clamp(1.5rem, 4vw, 3rem);
         font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
 
+      /* Greeting Container */
       .greeting-container {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 20px;
-        background-color: #777;
+        padding: 1rem;
+        background: linear-gradient(to right, #616161, #757575);
         color: white;
-        font-size: 1.5em;
+        font-size: clamp(1rem, 2.5vw, 1.5rem);
       }
 
       .greeting-container .logout {
-        background-color: #de2821;
+        background-color: #d32f2f;
         color: white;
         border: none;
-        padding: 10px 20px;
+        padding: 0.75rem 1.5rem;
         cursor: pointer;
-        border-radius: 5px;
-        font-size: 1em;
+        border-radius: 8px;
+        font-size: 0.9em;
+        transition: background-color 0.3s ease;
       }
 
+      .greeting-container .logout:hover {
+        background-color: #b71c1c;
+      }
+
+      /* Filters Container */
       .filters-container {
         display: flex;
-        justify-content: flex-start;
-        gap: 10px;
-        padding: 20px;
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding: 1.5rem;
+        background: white;
+        border-radius: 8px;
+        margin: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
       }
 
-      .filters-container select {
-        padding: 8px;
-        font-size: 1em;
+      .filters-container label {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        font-weight: 500;
+        flex: 1;
+        min-width: 200px;
       }
 
+      .filters-container select,
+      .date-range-container input {
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 1rem;
+        background-color: #fff;
+        transition: border-color 0.3s ease;
+      }
+
+      .filters-container select:hover,
+      .date-range-container input:hover {
+        border-color: #2e7d32;
+      }
+
+      .date-range-container {
+        display: none;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        width: 100%;
+      }
+
+      /* Table Styles */
       .table-container {
-        padding: 20px;
+        margin: 1rem;
+        overflow-x: auto;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
       }
 
       table {
         width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-        font-size: 1em;
-      }
-
-      table,
-      th,
-      td {
-        border: 1px solid #333;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 0;
       }
 
       th,
       td {
-        padding: 10px;
+        padding: 1rem;
         text-align: left;
+        border-bottom: 1px solid #eee;
       }
 
       th {
-        background-color: #2e7d32;
+        background: #2e7d32;
         color: white;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      th:first-child {
+        border-top-left-radius: 8px;
+      }
+
+      th:last-child {
+        border-top-right-radius: 8px;
+      }
+
+      tr:last-child td:first-child {
+        border-bottom-left-radius: 8px;
+      }
+
+      tr:last-child td:last-child {
+        border-bottom-right-radius: 8px;
+      }
+
+      tr:hover {
+        background-color: #f8f9fa;
       }
 
       td .action-btn {
         background-color: #2e7d32;
         color: white;
         border: none;
-        padding: 8px 15px;
+        padding: 0.6rem 1rem;
         cursor: pointer;
-        border-radius: 5px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
       }
 
-      .date-range-container {
-        display: none;
-        margin-top: 5px;
+      td .action-btn:hover {
+        background-color: #1b5e20;
+        transform: translateY(-1px);
       }
 
-      .date-range-container input {
-        padding: 5px;
-        font-size: 1em;
-        margin-right: 5px;
+      /* Responsive Design */
+      @media screen and (max-width: 768px) {
+        .greeting-container {
+          flex-direction: column;
+          gap: 1rem;
+          text-align: center;
+        }
+
+        .filters-container {
+          flex-direction: column;
+        }
+
+        .table-container {
+          margin: 0.5rem;
+          border-radius: 0;
+        }
+
+        td,
+        th {
+          padding: 0.75rem 0.5rem;
+        }
+
+        td .action-btn {
+          padding: 0.5rem 0.75rem;
+          width: 100%;
+        }
+      }
+
+      /* Print Styles */
+      @media print {
+        body {
+          background: white;
+        }
+
+        .greeting-container,
+        .filters-container {
+          display: none;
+        }
+
+        .table-container {
+          margin: 0;
+          box-shadow: none;
+        }
+
+        table {
+          border: 1px solid #ddd;
+        }
       }
     </style>
   </head>
@@ -108,7 +223,7 @@
 
     <div class="greeting-container">
       <div class="greeting" id="greeting"></div>
-      <button class="logout" onclick="location.href='../index.html'">
+      <button class="logout" onclick="location.href='index.html'">
         Logout
       </button>
     </div>
@@ -155,7 +270,7 @@
             <td>2024-12-11</td>
             <td>Employee 1</td>
             <td>
-              <button class="action-btn" onclick="location.href='csvtest.html'">
+              <button class="action-btn" onclick="convertJsonToPdf()">
                 View/Print
               </button>
             </td>
@@ -229,67 +344,174 @@
         filterTableByEmployee();
         updateSerialNumbers();
       }
-
+      // Date Filter function
+      // Date Filter function with improved date handling and validation
       function filterTableByDate() {
         const dateFilter = document.getElementById("date-filter").value;
         const startDateInput = document.getElementById("start-date");
         const endDateInput = document.getElementById("end-date");
         const rows = document.querySelectorAll("#data-table tbody tr");
 
+        // Get current date at midnight for consistent comparison
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
+        // Calculate yesterday
         const yesterday = new Date(today);
         yesterday.setDate(today.getDate() - 1);
+
+        // Format dates consistently
+        const formatDate = (date) => {
+          return date.toISOString().split("T")[0];
+        };
 
         let startDate, endDate;
 
         switch (dateFilter) {
           case "today":
-            startDate = today;
-            endDate = new Date(today);
-            endDate.setHours(23, 59, 59, 999);
+            startDate = endDate = formatDate(today);
             break;
           case "yesterday":
-            startDate = yesterday;
-            endDate = new Date(yesterday);
-            endDate.setHours(23, 59, 59, 999);
+            startDate = endDate = formatDate(yesterday);
             break;
           case "range":
-            if (startDateInput.value) {
-              startDate = new Date(startDateInput.value);
-              startDate.setHours(0, 0, 0, 0);
-            }
-            if (endDateInput.value) {
-              endDate = new Date(endDateInput.value);
-              endDate.setHours(23, 59, 59, 999);
+            // Validate and process date range
+            if (startDateInput.value && endDateInput.value) {
+              // Ensure start date is not after end date
+              if (
+                new Date(startDateInput.value) > new Date(endDateInput.value)
+              ) {
+                [startDateInput.value, endDateInput.value] = [
+                  endDateInput.value,
+                  startDateInput.value,
+                ];
+              }
+              startDate = startDateInput.value;
+              endDate = endDateInput.value;
+            } else if (startDateInput.value) {
+              startDate = endDate = startDateInput.value;
+            } else if (endDateInput.value) {
+              startDate = endDate = endDateInput.value;
+            } else {
+              // If no dates selected, show all rows
+              rows.forEach((row) => (row.style.display = ""));
+              return;
             }
             break;
+          default:
+            // Invalid filter value, show all rows
+            rows.forEach((row) => (row.style.display = ""));
+            return;
         }
 
+        // Add input validation and constraints
+        startDateInput.max = endDateInput.value || formatDate(today);
+        endDateInput.max = formatDate(today);
+        endDateInput.min = startDateInput.value;
+
+        // Filter rows based on date range
         rows.forEach((row) => {
-          const rowDate = new Date(row.cells[1].textContent);
-          rowDate.setHours(0, 0, 0, 0);
+          const rowDate = row.cells[1].textContent;
+          try {
+            const rowDateTime = new Date(rowDate);
+            rowDateTime.setHours(0, 0, 0, 0);
 
-          let showRow = true;
-          if (startDate && rowDate < startDate) showRow = false;
-          if (endDate && rowDate > endDate) showRow = false;
+            const startDateTime = new Date(startDate);
+            startDateTime.setHours(0, 0, 0, 0);
 
-          row.style.display = showRow ? "" : "none";
+            const endDateTime = new Date(endDate);
+            endDateTime.setHours(23, 59, 59, 999); // Include full end date
+
+            if (isNaN(rowDateTime.getTime())) {
+              console.warn(`Invalid date in row: ${rowDate}`);
+              row.style.display = "none";
+              return;
+            }
+
+            row.style.display =
+              rowDateTime >= startDateTime && rowDateTime <= endDateTime
+                ? ""
+                : "none";
+          } catch (e) {
+            console.error(`Error processing date: ${rowDate}`, e);
+            row.style.display = "none";
+          }
         });
       }
+
+      // Enhanced event listeners for date inputs
+      function setupDateListeners() {
+        const startDateInput = document.getElementById("start-date");
+        const endDateInput = document.getElementById("end-date");
+        const dateFilter = document.getElementById("date-filter");
+
+        // Debounce function to prevent too many rapid updates
+        function debounce(func, wait) {
+          let timeout;
+          return function executedFunction(...args) {
+            const later = () => {
+              clearTimeout(timeout);
+              func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+          };
+        }
+
+        const debouncedApplyFilters = debounce(applyFilters, 250);
+
+        // Add event listeners
+        startDateInput.addEventListener("change", () => {
+          if (dateFilter.value === "range") {
+            endDateInput.min = startDateInput.value;
+            debouncedApplyFilters();
+          }
+        });
+
+        endDateInput.addEventListener("change", () => {
+          if (dateFilter.value === "range") {
+            startDateInput.max = endDateInput.value;
+            debouncedApplyFilters();
+          }
+        });
+
+        // Initialize date range inputs with default values
+        const today = new Date();
+        const oneMonthAgo = new Date(today);
+        oneMonthAgo.setMonth(today.getMonth() - 1);
+
+        startDateInput.max = today.toISOString().split("T")[0];
+        endDateInput.max = today.toISOString().split("T")[0];
+        startDateInput.min = new Date(2020, 0, 1).toISOString().split("T")[0]; // Set reasonable minimum date
+      }
+
+      // Initialize date handling when page loads
+      window.onload = () => {
+        updateGreeting();
+        handleDateFilterChange();
+        setupDateListeners();
+      };
+
+      // Add event listeners for date range inputs
+      document
+        .getElementById("start-date")
+        .addEventListener("change", applyFilters);
+      document
+        .getElementById("end-date")
+        .addEventListener("change", applyFilters);
+
+      // employee Filter function
 
       function filterTableByEmployee() {
         const employeeFilter = document.getElementById("employee-filter").value;
         const rows = document.querySelectorAll("#data-table tbody tr");
 
         rows.forEach((row) => {
-          if (row.style.display !== "none") {
-            // Only filter visible rows
-            const employeeName = row.cells[2].textContent;
-            if (employeeFilter !== "any" && employeeName !== employeeFilter) {
-              row.style.display = "none";
-            }
+          const employeeName = row.cells[2].textContent;
+          if (employeeFilter === "any" || employeeName === employeeFilter) {
+            row.style.display = "";
+          } else {
+            row.style.display = "none";
           }
         });
       }
@@ -297,12 +519,231 @@
       window.onload = () => {
         updateGreeting();
         handleDateFilterChange();
-        applyFilters(); // Apply initial filters
       };
 
       document
         .getElementById("date-filter")
         .addEventListener("change", handleDateFilterChange);
+
+      async function convertJsonToPdf() {
+        try {
+          const response = await fetch("test.json");
+          const jsonData = await response.json();
+
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF();
+
+          const date = new Date();
+          const dateString = date.toLocaleDateString("en-US", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+          });
+          const dayString = date.toLocaleString("en-US", { weekday: "long" });
+          const recordDate = jsonData[0]?.["Record Date"] || "Not Available";
+
+          // Function to render the header
+          const renderHeader = (doc, pageNumber) => {
+            const pageWidth = doc.internal.pageSize.width;
+
+            if (pageNumber === 1) {
+              doc.setFillColor("#2e7d32");
+              doc.rect(0, 0, pageWidth, 30, "F");
+              doc.setFont("Yaro", "normal");
+              doc.setFontSize(30);
+              doc.setTextColor("#ffffff");
+              doc.text("SANJIVAN MEDICO TRADERS", pageWidth / 2, 20, {
+                align: "center",
+              });
+
+              doc.setFont("Helvetica", "bold");
+              doc.setFontSize(12);
+              doc.setTextColor("#000000");
+              doc.text(`Employee Name: John Doe`, 15, 37);
+              doc.text(
+                `Driver Name : ______________________`,
+                pageWidth - 85,
+                37
+              );
+              doc.text(`Record Date: ${recordDate}`, 15, 45);
+              doc.text(
+                `Track Name : ______________________`,
+                pageWidth - 85,
+                45
+              );
+              doc.text(`Print Date: ${dateString} [${dayString}]`, 15, 53);
+
+              return 60; // Return starting Y position for content
+            } else {
+              doc.setFont("helvetica", "bold");
+              doc.setFontSize(12);
+              doc.setTextColor("#000000");
+
+              const lineY = 15;
+              const spaceBelowLine = 10;
+
+              doc.text("SANJIVAN MEDICO TRADERS", pageWidth / 2, lineY, {
+                align: "center",
+              });
+
+              doc.setLineWidth(0.5);
+              doc.setDrawColor(0, 0, 0);
+              doc.line(15, lineY + 3, pageWidth - 15, lineY + 3);
+              doc.line(15, lineY + 4, pageWidth - 15, lineY + 4);
+
+              doc.text(`Employee Name: John Doe`, 15, lineY + spaceBelowLine);
+              doc.text(
+                `Record Date : ${recordDate}`,
+                pageWidth - 85,
+                lineY + spaceBelowLine
+              );
+
+              return lineY + spaceBelowLine + 10; // Return starting Y position for content
+            }
+          };
+
+          const renderFooter = (doc, pageNumber, totalPages) => {
+            const pageWidth = doc.internal.pageSize.width;
+            const pageHeight = doc.internal.pageSize.height;
+            doc.setFontSize(10);
+            const pageText = `Page ${pageNumber} / ${totalPages}`;
+            const textWidth = doc.getTextWidth(pageText);
+            doc.text(pageText, pageWidth - textWidth - 10, pageHeight - 10);
+          };
+
+          // Table data
+          const columns = [
+            "S. No.",
+            "PARTY CODE",
+            "CUSTOMER NAME",
+            "City",
+            "Receipt no.",
+            "Amount",
+          ];
+
+          const rows = jsonData.map((item, index) => [
+            index + 1,
+            item["CODE"] || "",
+            item["CUSTOMER NAME"] || "",
+            item["City"] || "",
+            item["Receipt no."] || "N/A",
+            item["Amount"] || "N/A",
+          ]);
+
+          const totalAmount = rows.reduce((sum, row) => {
+            const amount = parseFloat(row[5].replace(/[^0-9.-]+/g, ""));
+            return !isNaN(amount) ? sum + amount : sum;
+          }, 0);
+
+          // Main table
+          doc.autoTable({
+            head: [columns],
+            body: rows,
+            startY: renderHeader(doc, 1),
+            theme: "grid",
+            headStyles: {
+              fillColor: [41, 128, 185],
+              textColor: [255, 255, 255],
+              fontSize: 12,
+              halign: "center",
+              valign: "middle",
+            },
+            bodyStyles: {
+              fontSize: 10,
+              halign: "center",
+              valign: "middle",
+            },
+            columnStyles: {
+              2: { halign: "left" },
+              3: { halign: "left" },
+            },
+            alternateRowStyles: {
+              fillColor: [240, 240, 240],
+            },
+            margin: { top: 30 },
+            didDrawPage: (data) => {
+              const currentPage = doc.internal.getCurrentPageInfo().pageNumber;
+              renderHeader(doc, currentPage);
+            },
+          });
+
+          // Add Total Amount
+          doc.setFont("Helvetica", "normal");
+          doc.setFontSize(12);
+          const totalAmountText = `Total Amount: Rs ${totalAmount.toFixed(2)}`;
+          const totalY = doc.lastAutoTable.finalY + 10;
+
+          // Check if we need a new page for denomination table
+          const remainingSpace = doc.internal.pageSize.height - totalY;
+          if (remainingSpace < 120) {
+            // If less than 120 units of space remaining
+            doc.addPage();
+            const newPageStartY = renderHeader(
+              doc,
+              doc.internal.getNumberOfPages()
+            );
+            doc.text(totalAmountText, 15, newPageStartY);
+            var denominationStartY = newPageStartY + 10;
+          } else {
+            doc.text(totalAmountText, 15, totalY);
+            var denominationStartY = totalY + 20;
+          }
+
+          // Denomination Table
+          const denominationColumns = ["Denomination", "Units", "Total"];
+          const denominationRows = [
+            ["Rs 10", "", ""],
+            ["Rs 20", "", ""],
+            ["Rs 50", "", ""],
+            ["Rs 100", "", ""],
+            ["Rs 200", "", ""],
+            ["Rs 500", "", ""],
+            ["Total", "", ""],
+          ];
+
+          doc.autoTable({
+            head: [denominationColumns],
+            body: denominationRows,
+            startY: denominationStartY,
+            theme: "grid",
+            tableWidth: "auto",
+            margin: { left: 15 },
+            headStyles: {
+              fillColor: [41, 128, 185],
+              textColor: [255, 255, 255],
+              fontSize: 12,
+              halign: "center",
+            },
+            bodyStyles: {
+              fontSize: 10,
+              halign: "center",
+            },
+            columnStyles: {
+              0: { cellWidth: 50 },
+              1: { cellWidth: 30 },
+              2: { cellWidth: 70 },
+            },
+            alternateRowStyles: {
+              fillColor: [240, 240, 240],
+            },
+            didDrawPage: (data) => {
+              const currentPage = doc.internal.getCurrentPageInfo().pageNumber;
+              renderHeader(doc, currentPage);
+            },
+          });
+
+          // Update footers
+          const totalPages = doc.internal.getNumberOfPages();
+          for (let i = 1; i <= totalPages; i++) {
+            doc.setPage(i);
+            renderFooter(doc, i, totalPages);
+          }
+
+          doc.save("employee_name.pdf");
+        } catch (error) {
+          console.error("Error fetching JSON file:", error);
+        }
+      }
     </script>
   </body>
 </html>
