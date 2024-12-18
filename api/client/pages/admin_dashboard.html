@@ -24,7 +24,7 @@
 
       /* Header Styles */
       header {
-        background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+        background: linear-gradient(135deg, #4caf4f 0%, #1b5e20 100%);
         color: white;
         padding: 1.5rem;
         text-align: center;
@@ -92,7 +92,7 @@
 
       .filters-container select:hover,
       .date-range-container input:hover {
-        border-color: #2e7d32;
+        border-color: #4caf4f;
       }
 
       .date-range-container {
@@ -126,7 +126,7 @@
       }
 
       th {
-        background: #2e7d32;
+        background: #4caf4f;
         color: white;
         font-weight: 600;
         white-space: nowrap;
@@ -153,7 +153,7 @@
       }
 
       td .action-btn {
-        background-color: #2e7d32;
+        background-color: #4caf4f;
         color: white;
         border: none;
         padding: 0.6rem 1rem;
@@ -216,10 +216,21 @@
           border: 1px solid #ddd;
         }
       }
+      /* Logo */
+      .center-image {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 150px; /* Set the width to 50px */
+        height: auto; /* Maintain the original aspect ratio */
+      }
     </style>
   </head>
   <body>
-    <header>Sanjivan Medico Traders</header>
+    <header>
+      Sanjivan Medico Traders
+      <!-- <img src="/media_files/logo2.png" alt="" class="center-image" /> -->
+    </header>
 
     <div class="greeting-container">
       <div class="greeting" id="greeting"></div>
@@ -280,7 +291,7 @@
             <td>2024-12-10</td>
             <td>Employee 2</td>
             <td>
-              <button class="action-btn" onclick="location.href='csvtest.html'">
+              <button class="action-btn" onclick="convertJsonToPdf()">
                 View/Print
               </button>
             </td>
@@ -290,7 +301,7 @@
             <td>2024-12-09</td>
             <td>Employee 3</td>
             <td>
-              <button class="action-btn" onclick="location.href='csvtest.html'">
+              <button class="action-btn" onclick="convertJsonToPdf()">
                 View/Print
               </button>
             </td>
@@ -547,7 +558,7 @@
             const pageWidth = doc.internal.pageSize.width;
 
             if (pageNumber === 1) {
-              doc.setFillColor("#2e7d32");
+              doc.setFillColor("#4caf4f");
               doc.rect(0, 0, pageWidth, 30, "F");
               doc.setFont("Yaro", "normal");
               doc.setFontSize(30);
