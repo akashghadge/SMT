@@ -42,4 +42,17 @@ router.post('/create/employee', async (req, res) => {
     }
 });
 
+router.post('/all', async (req, res) => {
+    try {
+        // Fetch only usernames from the User collection
+        const users = await User.find({}, 'username'); // Fetch only the 'username' field
+        const usernames = users.map(user => user.username); // Extract usernames
+
+        res.status(200).json({ usernames });
+    } catch (err) {
+        console.error('Error fetching usernames:', err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+
 module.exports = router;

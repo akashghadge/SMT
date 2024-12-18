@@ -76,4 +76,49 @@ router.post('/delete-records', async (req, res) => {
     }
 })
 
+
+router.post('/grouped-records', async (req, res) => {
+    const { salesman, startDate, endDate } = req.body; // Get filter parameters from query string
+
+    try {
+        const matchConditions = {};
+
+        // Add salesman filter if provided
+        if (salesman) {
+            matchConditions.salesman = salesman;
+        }
+
+        // Add date range filter if provided
+        if (startDate || endDate) {
+            matchConditions.date = {};
+            if (startDate) {
+                matchConditions.date.$gte = new Date(startDate);
+            }
+            if (endDate) {
+                matchConditions.date.$lte = new Date(endDate);
+            }
+        }
+
+        const groupedRecords = await Record.aggregate([
+            { $match: matchConditions }, // Filter by salesman and/or date range
+            {
+                $group: {
+                    _id: {
+                        date: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
+                        salesman: "$salesman"
+                    },
+                    records: { $push: "$$ROOT" },
+                    totalAmount: { $sum: "$amount" },
+                }
+            },
+            { $sort: { "_id.date": 1, "_id.salesman": 1 } }
+        ]);
+
+        res.status(200).json(groupedRecords);
+    } catch (error) {
+        console.error('Error fetching grouped records:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 module.exports = router;
