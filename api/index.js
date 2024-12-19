@@ -2,7 +2,7 @@
 // initial set up of server
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8080;
 
 // must needed packages
 const cors = require("cors");
@@ -22,9 +22,9 @@ const verify = require("./verify");
 const User = require("./routes/User.route");
 const Code = require("./routes/Code.route");
 
-// routes setting 
-app.use('/api/user', User)
-app.use('/api/code', verify, Code);
+// routes setting
+app.use("/api/user", User);
+app.use("/api/code", verify, Code);
 
 // for production use
 app.use(express.static("client"));
@@ -33,9 +33,9 @@ const path = require("path");
 //     res.sendFile(path.join(__dirname, "client", "pages", "register_employee.html"))
 // })
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "client", "index.html"))
-})
+  res.sendFile(path.join(__dirname, "client", "index.html"));
+});
 
 app.listen(port, () => {
-    console.log("Server is listening on port ", port);
-})
+  console.log("Server is listening on port ", port);
+});
