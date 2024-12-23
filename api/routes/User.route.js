@@ -45,8 +45,8 @@ router.post('/create/employee', async (req, res) => {
 router.post('/all', async (req, res) => {
     try {
         // Fetch only usernames from the User collection
-        const users = await User.find({}, 'username'); // Fetch only the 'username' field
-        const usernames = users.map(user => user.username); // Extract usernames
+        const users = await User.find({}, 'name'); // Fetch only the 'username' field
+        const usernames = users.map(user => user.name); // Extract usernames
 
         res.status(200).json({ usernames });
     } catch (err) {

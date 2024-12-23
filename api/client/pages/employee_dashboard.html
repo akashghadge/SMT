@@ -399,6 +399,13 @@
 		function updateOption(options) {
 			let dropDown = document.getElementById('dropdownSelect');
 			let currOptions = ``;
+			if (options[0].CODE !== "NA") {
+				options.unshift({
+					"CODE": "NA",
+					"CUSTOMER NAME": "-",
+					"City": "-"
+				})
+			}
 			options.forEach((val, i) => {
 				currOptions +=
 					`
@@ -534,13 +541,12 @@
 				});
 
 				let allRecords = await response.json();
-				console.log(allRecords);
-
 				allRecords.forEach((record, i) => {
+					let currDate = new Date(record.date);
 					const row = document.createElement("tr");
 					row.innerHTML = `
 					<td>${i + 1}</td>
-					<td>${record.date}</td>
+					<td>${currDate.getFullYear()}-${currDate.getMonth() + 1}-${currDate.getDate()}</td>
 					<td>${record.partyCode}</td>
 					<td>${record.name}</td>
 					<td>${record.city}</td>

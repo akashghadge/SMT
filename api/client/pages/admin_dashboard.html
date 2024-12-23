@@ -732,13 +732,44 @@
           },
         });
 
-        // Add Total Amount
+
+        // Add Total Amount with commas.
+        function formatIndianCurrency(amount) {
+          // Convert to string with 2 decimal places
+          const parts = amount.toFixed(2).split(".");
+          const integerPart = parts[0];
+          const decimalPart = parts[1];
+
+          // Handle numbers less than 1000
+          if (integerPart.length <= 3) {
+            return `${integerPart}.${decimalPart}`;
+          }
+          // Get last 3 digits
+          let formattedNumber = integerPart.substring(integerPart.length - 3);
+
+          // Process remaining digits in groups of 2 from right to left
+          let remaining = integerPart.substring(0, integerPart.length - 3);
+          while (remaining.length > 0) {
+            formattedNumber = `${remaining.slice(-2)},${formattedNumber}`;
+            remaining = remaining.slice(0, -2);
+          }
+
+          // Remove leading comma if exists
+          formattedNumber = formattedNumber.replace(/^,/, "");
+
+          return `${formattedNumber}.${decimalPart}`;
+        }
+
+        // Example usage in your PDF generation code
         doc.setFont("Helvetica", "normal");
         doc.setFontSize(12);
-        const totalAmountText = `Total Amount: Rs ${totalAmount.toFixed(2)}`;
-        const totalY = doc.lastAutoTable.finalY + 10;
 
-        // Check if we need a new page for denomination table
+        const formattedTotalAmount = formatIndianCurrency(totalAmount);
+        const totalAmountText = `Total Amount: Rs. ${formattedTotalAmount}`; // Changed to "Rs."
+        const totalY = doc.lastAutoTable.finalY + 10;
+        //=========End of the total and commas =========================        // Check if we need a new page for denomination table
+
+
         const remainingSpace = doc.internal.pageSize.height - totalY;
         if (remainingSpace < 120) {
           // If less than 120 units of space remaining
