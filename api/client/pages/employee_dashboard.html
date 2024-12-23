@@ -60,6 +60,50 @@
 			background-color: #c0392b;
 		}
 
+		/* Greeting Container */
+		.greeting-container {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 10px;
+			background: linear-gradient(to right, #616161, #757575);
+			color: white;
+			font-size: larger;
+		}
+
+		/*Logout button */
+		.greeting-container .logout {
+			background-color: #d32f2f;
+			color: white;
+			border: none;
+			padding: 8px;
+			cursor: pointer;
+			border-radius: 8px;
+			font-size: 0.9em;
+			transition: background-color 0.3s ease;
+		}
+
+		.greeting-container .logout:hover {
+			background-color: #b71c1c;
+		}
+
+		/*Create Account button */
+		.greeting-container .create_account {
+			background-color: #4caf4f;
+			color: white;
+			border: none;
+			padding: 8px;
+			cursor: pointer;
+			border-radius: 8px;
+			font-size: 0.9em;
+			transition: background-color 0.3s ease;
+		}
+
+		.greeting-container .create_account:hover {
+			background-color: #3b8a3e;
+		}
+
+
 		/* Container Styling */
 		.container {
 			max-width: 1200px;
@@ -216,14 +260,35 @@
 				min-width: 100px;
 			}
 		}
+
+		/* Chrome, Safari, Edge, Opera */
+		input::-webkit-outer-spin-button,
+		input::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+
+		/* Firefox */
+		input[type=number] {
+			-moz-appearance: textfield;
+		}
 	</style>
 </head>
 
 <body>
 	<header>
 		<h1>Sanjivan Medico Traders</h1>
-		<button id="logout-btn">Logout</button>
 	</header>
+	<!-- =============== Added from admin ============================ -->
+	<div class="greeting-container">
+		<div class="greeting" id="greeting"></div>
+		<div>
+			<button class="logout" id="logout-btn" onclick="location.href='../index.html'">
+				Logout
+			</button>
+		</div>
+	</div>
+	<!-- =========================================== -->
 	<div class="container">
 		<h2>Add Record</h2>
 		<table id="add-table">
@@ -258,10 +323,12 @@
 						<input type="text" id="city" placeholder="City" required disabled />
 					</td>
 					<td>
-						<input type="text" id="receipt-no" placeholder="Receipt No." required />
+						<input type="number" id="receipt-no" placeholder="Receipt No." required
+							onkeydown="javascript: return event.keyCode == 69 ? false : true" />
 					</td>
 					<td>
-						<input type="number" id="amount" placeholder="Amount" required />
+						<input type="number" id="amount" placeholder="Amount" required
+							onkeydown="javascript: return event.keyCode == 69 ? false : true" />
 					</td>
 					<td><input type="text" id="remarks" placeholder="Remarks" /></td>
 					<td><button id="add-button">Add</button></td>
@@ -290,6 +357,25 @@
 		</table>
 	</div>
 	<script>
+		async function updateGreeting() {
+			const now = new Date();
+			const hour = now.getHours();
+			const greetingEl = document.getElementById("greeting");
+
+			let greeting = "Good Evening, ";
+			if (hour < 12) {
+				greeting = "Good Morning, ";
+			} else if (hour < 18) {
+				greeting = "Good Afternoon, ";
+			}
+
+			const userName = JSON.parse(localStorage.getItem('user')).name // Fetch the user's name
+			greetingEl.textContent = greeting + userName;
+		}
+		window.onload = () => {
+			updateGreeting();
+		}
+
 		const today = new Date();
 		const formattedDate = today.toISOString().split('T')[0];
 		// Set the value of the input field
@@ -408,7 +494,7 @@
 					let data = await response.json();
 					// Clear Input Fields
 					document.querySelectorAll("#add-row input").forEach((input) => {
-						if (input.id === 'receipt-no' || input.id === 'amount') {
+						if (input.id === 'receipt-no' || input.id === 'amount' | input.id === 'remarks') {
 							input.value = "";
 						}
 						input.classList.remove("error"); // Remove error class after clearing

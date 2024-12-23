@@ -31,16 +31,19 @@
           </div>
         </div>
         <button type="submit" class="login-button">Login</button>
-        <p class="forgot-password">
+        <!--<p class="forgot-password">
           <a href="#">Forgot your password?</a>
-        </p>
+        </p> -->
         <div id="error-message" class="error-message"></div>
       </form>
-      <div class="register-section">
-        <button class="register-button" onclick="window.location.href='/pages/register_employee.html'">
-          Create Account
-        </button>
-      </div>
+      <!--<div class="register-section">
+          <button
+            class="register-button"
+            onclick="window.location.href='/pages/register_employee.html'"
+          >
+            Create Account
+          </button>
+        </div>-->
       <div class="footer">
         <p>&copy; 2024 Sanjivan Medico Traders. All rights reserved.</p>
       </div>
@@ -71,12 +74,12 @@
       .addEventListener("submit", async function (event) {
         event.preventDefault();
         try {
-          const username = document.getElementById('username').value;
-          const password = document.getElementById('password').value;
-          const response = await fetch('/api/user/in', {
-            method: 'POST',
+          const username = document.getElementById("username").value;
+          const password = document.getElementById("password").value;
+          const response = await fetch("/api/user/in", {
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({ username: username, password: password }),
           });
@@ -84,32 +87,34 @@
           let data = await response.json();
           // data = JSON.parse(data);
           if (data.jwt) {
-            localStorage.setItem('jwt', data.jwt);
-            localStorage.setItem('isAdmin', data.isAdmin);
-            localStorage.setItem('user', JSON.stringify(data.user));
+            localStorage.setItem("jwt", data.jwt);
+            localStorage.setItem("isAdmin", data.isAdmin);
+            localStorage.setItem("user", JSON.stringify(data.user));
             if (data.isAdmin) {
-              window.location.href = '/pages/admin_dashboard.html';
+              window.location.href = "/pages/admin_dashboard.html";
             } else {
-              window.location.href = '/pages/employee_dashboard.html';
+              window.location.href = "/pages/employee_dashboard.html";
             }
           } else {
-            const errorMessage = document.getElementById('error-message');
-            errorMessage.textContent = data.error || 'Login failed. Please try again.';
-            errorMessage.style.display = 'block';
+            const errorMessage = document.getElementById("error-message");
+            errorMessage.textContent =
+              data.error || "Login failed. Please try again.";
+            errorMessage.style.display = "block";
             setTimeout(() => {
-              errorMessage.style.display = 'none';
+              errorMessage.style.display = "none";
             }, 5000);
           }
         } catch (error) {
-          const errorMessage = document.getElementById('error-message');
-          errorMessage.textContent = 'Login failed. Please try again.';
-          errorMessage.style.display = 'block';
+          const errorMessage = document.getElementById("error-message");
+          errorMessage.textContent = "Login failed. Please try again.";
+          errorMessage.style.display = "block";
           setTimeout(() => {
-            errorMessage.style.display = 'none';
+            errorMessage.style.display = "none";
           }, 5000);
         }
       });
   </script>
+   
 </body>
 
 </html>

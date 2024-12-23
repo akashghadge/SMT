@@ -55,7 +55,7 @@ router.post('/filter-records', async (req, res) => {
             date: { $gte: req.body.start, $lte: req.body.end }
         }
         console.log(filterLocal);
-        const records = await Record.find(filterLocal);
+        const records = await Record.find(filterLocal).sort({ receiptNumber: 1 });;
 
         // Respond with the matching records
         res.status(200).json(records);
@@ -111,7 +111,17 @@ router.post('/grouped-records', async (req, res) => {
                     totalAmount: { $sum: "$amount" },
                 }
             },
-            { $sort: { "_id.date": 1, "_id.salesman": 1 } }
+            { $sort: { "_id.date": 1, "_id.salesman": 1 } },
+            {
+                $project: {
+                    _id: 1,
+                    totalAmount: 1,
+                    records: {
+                        $sortArray: { input: "$records", sortBy: { receiptNumber: 1 } } // NEW: Sorting `records` array
+                    }
+                }
+            }
+
         ]);
 
         res.status(200).json(groupedRecords);

@@ -25,11 +25,11 @@
 
     /* Header Styles */
     header {
-      background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+      background: linear-gradient(135deg, #4caf4f 0%, #1b5e20 100%);
       color: white;
       padding: 1.5rem;
       text-align: center;
-      font-size: clamp(1.5rem, 4vw, 3rem);
+      font-size: xx-large;
       font-weight: bold;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
@@ -39,17 +39,18 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem;
+      padding: 10px;
       background: linear-gradient(to right, #616161, #757575);
       color: white;
-      font-size: clamp(1rem, 2.5vw, 1.5rem);
+      font-size: larger;
     }
 
+    /*Logout button */
     .greeting-container .logout {
       background-color: #d32f2f;
       color: white;
       border: none;
-      padding: 0.75rem 1.5rem;
+      padding: 8px;
       cursor: pointer;
       border-radius: 8px;
       font-size: 0.9em;
@@ -58,6 +59,22 @@
 
     .greeting-container .logout:hover {
       background-color: #b71c1c;
+    }
+
+    /*Create Account button */
+    .greeting-container .create_account {
+      background-color: #4caf4f;
+      color: white;
+      border: none;
+      padding: 8px;
+      cursor: pointer;
+      border-radius: 8px;
+      font-size: 0.9em;
+      transition: background-color 0.3s ease;
+    }
+
+    .greeting-container .create_account:hover {
+      background-color: #3b8a3e;
     }
 
     /* Filters Container */
@@ -104,6 +121,7 @@
     }
 
     /* Table Styles */
+
     .table-container {
       margin: 1rem;
       overflow-x: auto;
@@ -113,48 +131,50 @@
     }
 
     table {
-      width: 100%;
+      width: 90%;
       border-collapse: separate;
       border-spacing: 0;
-      margin: 0;
+      margin: 0 auto;
     }
 
     th,
     td {
-      padding: 1rem;
-      text-align: left;
-      border-bottom: 1px solid #eee;
+      padding: 12px;
+      border: 1px solid #e0e0e0;
+      text-align: center;
+      vertical-align: middle;
     }
 
     th {
-      background: #2e7d32;
+      background: #4caf4f;
       color: white;
       font-weight: 600;
       white-space: nowrap;
     }
 
-    th:first-child {
-      border-top-left-radius: 8px;
-    }
+    /* Table border radius
+      th:first-child {
+        border-top-left-radius: 80px;
+      }
 
-    th:last-child {
-      border-top-right-radius: 8px;
-    }
+      th:last-child {
+        border-top-right-radius: 80px;
+      }
 
-    tr:last-child td:first-child {
-      border-bottom-left-radius: 8px;
-    }
+      tr:last-child td:first-child {
+        border-bottom-left-radius: 8px;
+      }
 
-    tr:last-child td:last-child {
-      border-bottom-right-radius: 8px;
-    }
+      tr:last-child td:last-child {
+        border-bottom-right-radius: 8px;
+      }
 
-    tr:hover {
-      background-color: #f8f9fa;
-    }
+      tr:hover {
+        background-color: #a0a0a09b;
+      } */
 
     td .action-btn {
-      background-color: #2e7d32;
+      background-color: #4caf4f;
       color: white;
       border: none;
       padding: 0.6rem 1rem;
@@ -165,7 +185,7 @@
     }
 
     td .action-btn:hover {
-      background-color: #1b5e20;
+      background-color: #3b8a3e;
       transform: translateY(-1px);
     }
 
@@ -225,11 +245,15 @@
 
   <div class="greeting-container">
     <div class="greeting" id="greeting"></div>
-    <button class="logout" onclick="location.href='../index.html'">
-      Logout
-    </button>
+    <div>
+      <button class="create_account" onclick="window.location.href='/pages/register_employee.html'">
+        Create Account
+      </button>
+      <button class=" logout" onclick="location.href='../index.html'">
+        Logout
+      </button>
+    </div>
   </div>
-
   <div class="filters-container">
     <label for="date-filter">
       Date Filter:
@@ -536,6 +560,8 @@
 
       let data = await response.json();
       records = data;
+      console.log(records);
+
       let main = document.getElementById('mainBody');
       main.innerHTML = "";
       data.forEach((row, i) => {
@@ -577,6 +603,9 @@
         const dayString = date.toLocaleString("en-US", { weekday: "long" });
         const recordDate = jsonData._id.date;
 
+        const recordDateTemp = new Date(recordDate);
+        const recordDayString = recordDateTemp.toLocaleString("en-US", { weekday: "long" });
+
         // Function to render the header
         const renderHeader = (doc, pageNumber) => {
           const pageWidth = doc.internal.pageSize.width;
@@ -594,7 +623,7 @@
             doc.setFont("Helvetica", "bold");
             doc.setFontSize(12);
             doc.setTextColor("#000000");
-            doc.text(`Employee Name: John Doe`, 15, 37);
+            doc.text(`Employee Name: ${jsonData._id.salesman}`, 15, 37);
             doc.text(
               `Driver Name : ______________________`,
               pageWidth - 85,
@@ -606,7 +635,7 @@
               pageWidth - 85,
               45
             );
-            doc.text(`Print Date: ${dateString} [${dayString}]`, 15, 53);
+            doc.text(`Record Day: ${recordDayString}`, 15, 53);
 
             return 60; // Return starting Y position for content
           } else {
@@ -649,19 +678,19 @@
         // Table data
         const columns = [
           "S. No.",
+          "Receipt no.",
           "PARTY CODE",
           "CUSTOMER NAME",
           "City",
-          "Receipt no.",
           "Amount",
         ];
 
         const rows = jsonData.records.map((item, index) => [
           index + 1,
+          item["receiptNumber"] || "N/A",
           item["partyCode"] || "",
           item["name"] || "",
           item["city"] || "",
-          item["receiptNumber"] || "N/A",
           item["amount"] || "N/A",
         ]);
 
