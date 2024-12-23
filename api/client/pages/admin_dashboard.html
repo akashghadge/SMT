@@ -669,7 +669,7 @@
             doc.line(15, lineY + 3, pageWidth - 15, lineY + 3);
             doc.line(15, lineY + 4, pageWidth - 15, lineY + 4);
 
-            doc.text(`Employee Name: John Doe`, 15, lineY + spaceBelowLine);
+            doc.text(`Employee Name: ${jsonData._id.salesman}`, 15, lineY + spaceBelowLine);
             doc.text(
               `Record Date : ${recordDate}`,
               pageWidth - 85,
