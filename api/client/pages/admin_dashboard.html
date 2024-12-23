@@ -237,6 +237,12 @@
         border: 1px solid #ddd;
       }
     }
+
+    .no-record-heading {
+      color: #4caf4f;
+      text-align: center;
+      font-size: 2rem;
+    }
   </style>
 </head>
 
@@ -276,8 +282,7 @@
       </select>
     </label>
   </div>
-
-  <div class="table-container">
+  <div class="table-container" id="table-container">
     <table id="data-table">
       <thead>
         <tr>
@@ -290,6 +295,7 @@
       <tbody id="mainBody">
       </tbody>
     </table>
+    <h1 id="no-record-heading" class="no-record-heading">No records has been added yet...</h1>
   </div>
 
   <script>
@@ -560,13 +566,10 @@
 
       let data = await response.json();
       records = data;
-      console.log(records);
 
       let main = document.getElementById('mainBody');
       main.innerHTML = "";
       data.forEach((row, i) => {
-        console.log(row);
-
         main.innerHTML +=
           `
         <tr>
@@ -581,6 +584,17 @@
         </tr>
           `
       })
+      console.log(data);
+
+      if (data.length === 0) {
+        document.getElementById('no-record-heading').style.visibility = 'visible'
+        document.getElementById('data-table').style.visibility = 'hidden';
+      }
+      else {
+        document.getElementById('no-record-heading').style.visibility = 'hidden'
+        document.getElementById('data-table').style.visibility = 'visible';
+      }
+
       // Clear Input Fields
     }
     document
@@ -678,20 +692,22 @@
         // Table data
         const columns = [
           "S. No.",
-          "Receipt no.",
           "PARTY CODE",
           "CUSTOMER NAME",
           "City",
+          "Receipt no.",
           "Amount",
         ];
 
         const rows = jsonData.records.map((item, index) => [
           index + 1,
-          item["receiptNumber"] || "N/A",
           item["partyCode"] || "",
           item["name"] || "",
           item["city"] || "",
-          item["amount"] || "N/A",
+          item["receiptNumber"] || "N/A",
+          item["amount"]
+            ? formatIndianCurrency(parseFloat(item["amount"]))
+            : "N/A",
         ]);
 
         const totalAmount = rows.reduce((sum, row) => {
@@ -719,8 +735,11 @@
             valign: "middle",
           },
           columnStyles: {
-            2: { halign: "left" },
-            3: { halign: "left" },
+            1: { halign: "center" }, // partycode
+            2: { halign: "left" }, // customer
+            3: { halign: "left" }, // city
+            4: { halign: "center" }, // receipt
+            5: { halign: "right" }, // amount
           },
           alternateRowStyles: {
             fillColor: [240, 240, 240],
@@ -757,7 +776,8 @@
           // Remove leading comma if exists
           formattedNumber = formattedNumber.replace(/^,/, "");
 
-          return `${formattedNumber}.${decimalPart}`;
+          // return `${formattedNumber}.${decimalPart}`;
+          return `${formattedNumber}`;
         }
 
         // Example usage in your PDF generation code
@@ -835,7 +855,7 @@
           renderFooter(doc, i, totalPages);
         }
 
-        doc.save("employee_name.pdf");
+        doc.save(`${jsonData._id.salesman}_${recordDate}.pdf`);
       } catch (error) {
         console.error("Error fetching JSON file:", error);
       }
