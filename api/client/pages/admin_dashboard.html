@@ -761,7 +761,7 @@
 
           // Handle numbers less than 1000
           if (integerPart.length <= 3) {
-            return `${integerPart}.${decimalPart}`;
+            return `${integerPart}`;
           }
           // Get last 3 digits
           let formattedNumber = integerPart.substring(integerPart.length - 3);

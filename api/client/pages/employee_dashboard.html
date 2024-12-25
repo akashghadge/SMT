@@ -272,6 +272,11 @@
 		input[type=number] {
 			-moz-appearance: textfield;
 		}
+
+		.record-history-heading {
+			display: flex;
+			justify-content: space-between;
+		}
 	</style>
 </head>
 
@@ -335,8 +340,10 @@
 				</tr>
 			</tbody>
 		</table>
-
-		<h2>Record History</h2>
+		<div class="record-history-heading">
+			<h2>Record History</h2>
+			<h2 id="total-amount-heading">Amount: 0</h2>
+		</div>
 		<table id="history-table">
 			<thead>
 				<tr>
@@ -406,11 +413,12 @@
 					"City": "-"
 				})
 			}
+			let inputBoxValue = document.getElementById('party-code').value;
 			options.forEach((val, i) => {
 				currOptions +=
 					`
-            <option value="${val.CODE}">${val.CODE}</option>
-          `
+				<option value="${val.CODE}" ${i == 1 && inputBoxValue ? 'selected' : ''}>${val.CODE}</option>
+				`
 			})
 			dropDown.innerHTML = currOptions;
 			selectPartyCode();
@@ -541,6 +549,7 @@
 				});
 
 				let allRecords = await response.json();
+				let totalAmount = 0;
 				allRecords.forEach((record, i) => {
 					let currDate = new Date(record.date);
 					const row = document.createElement("tr");
@@ -551,7 +560,7 @@
 					<td>${record.name}</td>
 					<td>${record.city}</td>
 					<td>${record.receiptNumber}</td>
-					<td>${record.amount}</td>
+					<td>${formatIndianCurrency(record.amount)}</td>
 					<td>${record.remark}</td>
 					<td><button class="delete-btn">Delete</button></td>
 					`;
@@ -588,8 +597,9 @@
 							}
 						});
 
+					totalAmount += record.amount;
 				})
-
+				document.getElementById('total-amount-heading').innerHTML = `Amount: ${formatIndianCurrency(totalAmount)}`;
 			} catch (error) {
 				console.log(error);
 			}
@@ -600,6 +610,33 @@
 			.addEventListener("click", function () {
 				window.location.href = "../index.html"; // Redirect to the login page
 			});
+		// Add Total Amount with commas.
+		function formatIndianCurrency(amount) {
+			// Convert to string with 2 decimal places
+			const parts = amount.toFixed(2).split(".");
+			const integerPart = parts[0];
+			const decimalPart = parts[1];
+
+			// Handle numbers less than 1000
+			if (integerPart.length <= 3) {
+				return `${integerPart}`;
+			}
+			// Get last 3 digits
+			let formattedNumber = integerPart.substring(integerPart.length - 3);
+
+			// Process remaining digits in groups of 2 from right to left
+			let remaining = integerPart.substring(0, integerPart.length - 3);
+			while (remaining.length > 0) {
+				formattedNumber = `${remaining.slice(-2)},${formattedNumber}`;
+				remaining = remaining.slice(0, -2);
+			}
+
+			// Remove leading comma if exists
+			formattedNumber = formattedNumber.replace(/^,/, "");
+
+			// return `${formattedNumber}.${decimalPart}`;
+			return `${formattedNumber}`;
+		}
 	</script>
 </body>
 

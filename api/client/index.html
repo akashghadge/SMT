@@ -44,8 +44,8 @@
             Create Account
           </button>
         </div>-->
-      <div class="footer">
-        <p>&copy; 2024 Sanjivan Medico Traders. All rights reserved.</p>
+      <div class="footer" id="footer">
+        <p>&copy; 2025 Sanjivan Medico Traders. All rights reserved.</p>
       </div>
     </div>
   </div>
@@ -113,8 +113,12 @@
           }, 5000);
         }
       });
+    window.onload = () => {
+      let yearValue = new Date(Date.now()).getFullYear();
+      console.log(yearValue);
+      document.getElementById('footer').innerHTML = `&copy; ${yearValue} Sanjivan Medico Traders. All rights reserved`
+    }
   </script>
-   
 </body>
 
 </html>
