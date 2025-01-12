@@ -718,10 +718,19 @@
           return !isNaN(amount) ? sum + amount : sum;
         }, 0);
 
+        //create new Array such that iff gap is there then we add empty row
+        let newRows = [];
+        rows.forEach((row, i) => {
+          if (i != 0 && rows[i - 1][4] !== (row[4] - 1)) {
+            newRows.push(['*', "*", "*", "*", "*", "*"]);
+          }
+          newRows.push(row);
+        })
+
         // Main table
         doc.autoTable({
           head: [columns],
-          body: rows,
+          body: newRows,
           startY: renderHeader(doc, 1),
           theme: "grid",
           headStyles: {
