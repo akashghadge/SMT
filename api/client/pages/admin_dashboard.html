@@ -297,8 +297,10 @@
     </table>
     <h1 id="no-record-heading" class="no-record-heading">No records has been added yet...</h1>
   </div>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js" crossorigin="anonymous"
+    referrerpolicy="no-referrer"></script>
   <script>
+
     function updateGreeting() {
       const now = new Date();
       const hour = now.getHours();
@@ -574,7 +576,7 @@
           `
         <tr>
           <td>${i + 1}</td>
-          <td>${row._id.date}</td>
+          <td>${moment(row._id.date).format('DD-MM-YYYY')}</td>
           <td>${row._id.salesman}</td>
           <td>
             <button class="action-btn" onclick="convertJsonToPdf(${i})">
@@ -643,7 +645,7 @@
               pageWidth - 85,
               37
             );
-            doc.text(`Record Date: ${recordDate}`, 15, 45);
+            doc.text(`Record Date: ${moment(recordDate).format('DD-MM-YYYY')}`, 15, 45);
             doc.text(
               `Track Name : ______________________`,
               pageWidth - 85,
@@ -671,7 +673,7 @@
 
             doc.text(`Employee Name: ${jsonData._id.salesman}`, 15, lineY + spaceBelowLine);
             doc.text(
-              `Record Date : ${recordDate}`,
+              `Record Date : ${moment(recordDate).format('DD-MM-YYYY')}`,
               pageWidth - 85,
               lineY + spaceBelowLine
             );
@@ -855,7 +857,7 @@
           renderFooter(doc, i, totalPages);
         }
 
-        doc.save(`${jsonData._id.salesman}_${recordDate}.pdf`);
+        doc.save(`${jsonData._id.salesman}_${moment(recordDate).format('DD-MM-YYYY')}.pdf`);
       } catch (error) {
         console.error("Error fetching JSON file:", error);
       }
