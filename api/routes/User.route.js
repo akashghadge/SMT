@@ -13,7 +13,7 @@ router.post("/in", async (req, res) => {
         res.status(200).json({ "jwt": accessToken, isAdmin: true, user: payload })
     }
     else {
-        const user = await User.findOne({ username: username, password: password });
+        const user = await User.findOne({ username: username, password: password }).select('-password');
         if (!user) {
             return res.status(400).json({ error: "User not found.", "jwt": null });
         }
